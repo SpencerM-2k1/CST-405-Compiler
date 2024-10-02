@@ -1,0 +1,9 @@
+int x;
+int y;
+int z;
+x = 5 + 3;
+y = 5 - 2;
+z = x - y + 9;
+write x;
+write y;
+write z;

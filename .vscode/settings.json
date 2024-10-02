@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.l": "lex",
+        "operandstack.h": "c",
+        "codegenerator.h": "c",
+        "string.h": "c"
+    }
+}

@@ -1,0 +1,528 @@
+PARSER: Recognized variable declaration: x
+PARSER: Printing symbol table
+Symbol Table:
+PARSER: Checking if variable has already been declared
+Name with suffix: x_var
+Symbol Table:
+Name: x_var, Type: int, Scope Level: 0
+PARSER: Recognized variable declaration: y
+PARSER: Printing symbol table
+Symbol Table:
+Name: x_var, Type: int, Scope Level: 0
+PARSER: Checking if variable has already been declared
+Name with suffix: y_var
+Symbol Table:
+Name: y_var, Type: int, Scope Level: 0
+Name: x_var, Type: int, Scope Level: 0
+PARSER: Recognized variable declaration: a
+PARSER: Printing symbol table
+Symbol Table:
+Name: y_var, Type: int, Scope Level: 0
+Name: x_var, Type: int, Scope Level: 0
+PARSER: Checking if variable has already been declared
+Name with suffix: a_var
+Symbol Table:
+Name: y_var, Type: int, Scope Level: 0
+Name: x_var, Type: int, Scope Level: 0
+Name: a_var, Type: int, Scope Level: 0
+PARSER: Recognized variable declaration: b
+PARSER: Printing symbol table
+Symbol Table:
+Name: y_var, Type: int, Scope Level: 0
+Name: x_var, Type: int, Scope Level: 0
+Name: a_var, Type: int, Scope Level: 0
+PARSER: Checking if variable has already been declared
+Name with suffix: b_var
+Symbol Table:
+Name: y_var, Type: int, Scope Level: 0
+Name: x_var, Type: int, Scope Level: 0
+Name: b_var, Type: int, Scope Level: 0
+Name: a_var, Type: int, Scope Level: 0
+PARSER: Recognized variable declaration: c
+PARSER: Printing symbol table
+Symbol Table:
+Name: y_var, Type: int, Scope Level: 0
+Name: x_var, Type: int, Scope Level: 0
+Name: b_var, Type: int, Scope Level: 0
+Name: a_var, Type: int, Scope Level: 0
+PARSER: Checking if variable has already been declared
+Name with suffix: c_var
+Symbol Table:
+Name: y_var, Type: int, Scope Level: 0
+Name: x_var, Type: int, Scope Level: 0
+Name: c_var, Type: int, Scope Level: 0
+Name: b_var, Type: int, Scope Level: 0
+Name: a_var, Type: int, Scope Level: 0
+PARSER: Recognized variable declaration list
+PARSER: Recognized variable declaration list
+PARSER: Recognized variable declaration list
+PARSER: Recognized variable declaration list
+PARSER: Recognized variable declaration list
+PARSER: Recognized number
+PARSER: Recognized assignment statement
+PARSER: Recognized number
+PARSER: Recognized assignment statement
+PARSER: Recognized number
+PARSER: Recognized binary operator
+PARSER: Recognized number
+PARSER: Recognized expression
+PARSER: Recognized assignment statement
+ASSIGNMENT statement 
+PARSER: Recognized binary operator
+ASSIGNMENT statement 
+PARSER: Recognized expression
+PARSER: Recognized binary operator
+PARSER: Recognized number
+PARSER: Recognized expression
+PARSER: Recognized assignment statement
+ASSIGNMENT statement 
+PARSER: Recognized binary operator
+ASSIGNMENT statement 
+PARSER: Recognized expression
+PARSER: Recognized binary operator
+ASSIGNMENT statement 
+PARSER: Recognized expression
+PARSER: Recognized binary operator
+ASSIGNMENT statement 
+PARSER: Recognized expression
+PARSER: Recognized binary operator
+ASSIGNMENT statement 
+PARSER: Recognized expression
+PARSER: Recognized binary operator
+PARSER: Recognized number
+PARSER: Recognized expression
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized write statement
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+The PARSER has started
+Parsing successful!
+Program
+├── VarDeclList
+|   ├── VarDecl: int x_var
+|   └── VarDeclList
+|       ├── VarDecl: int y_var
+|       └── VarDeclList
+|           ├── VarDecl: int a_var
+|           └── VarDeclList
+|               ├── VarDecl: int b_var
+|               └── VarDeclList
+|                   ├── VarDecl: int c_var
+|                   └── VarDeclList
+└── StmtList
+    ├── AssignStmt: x_var =
+    |   └── SimpleExpr: 1
+    └── StmtList
+        ├── AssignStmt: a_var =
+        |   └── SimpleExpr: 12
+        └── StmtList
+            ├── AssignStmt: b_var =
+            |   └── Expr: +
+            |       ├── SimpleExpr: 23
+            |       └── SimpleExpr: 10
+            └── StmtList
+                ├── AssignStmt: x_var =
+                |   └── Expr: +
+                |       ├── Expr: +
+                |       |   ├── SimpleID: a_var
+                |       |   └── SimpleID: a_var
+                |       └── SimpleExpr: 1
+                └── StmtList
+                    ├── AssignStmt: y_var =
+                    |   └── Expr: +
+                    |       ├── Expr: +
+                    |       |   ├── Expr: +
+                    |       |   |   ├── Expr: +
+                    |       |   |   |   ├── Expr: +
+                    |       |   |   |   |   ├── SimpleID: x_var
+                    |       |   |   |   |   └── SimpleID: a_var
+                    |       |   |   |   └── SimpleID: b_var
+                    |       |   |   └── SimpleID: c_var
+                    |       |   └── SimpleID: a_var
+                    |       └── SimpleExpr: 5
+                    └── StmtList
+                        ├── WriteStmt: x_var
+                        └── StmtList
+                            ├── WriteStmt: y_var
+                            └── StmtList - END
+Symbol Table:
+Name: y_var, Type: int, Scope Level: 0
+Name: x_var, Type: int, Scope Level: 0
+Name: c_var, Type: int, Scope Level: 0
+Name: b_var, Type: int, Scope Level: 0
+Name: a_var, Type: int, Scope Level: 0
+
+=== SEMANTIC ANALYSIS ===
+
+Performing semantic analysis on program
+SEMANTIC: Recognized NodeType_Program
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_VarDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_VarDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_VarDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_VarDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_VarDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_SimpleExpr
+Generating TAC for simple expression
+    ===OPERAND STACK===
+     - t0
+    ===END OF OPERAND STACK===
+t0 = 1 assign (null)
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_SimpleExpr
+Generating TAC for simple expression
+    ===OPERAND STACK===
+     - t1
+    ===END OF OPERAND STACK===
+t1 = 12 assign (null)
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_Expr
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_SimpleExpr
+Generating TAC for simple expression
+    ===OPERAND STACK===
+     - t2
+    ===END OF OPERAND STACK===
+t2 = 23 assign (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_SimpleExpr
+Generating TAC for simple expression
+    ===OPERAND STACK===
+     - t2
+     - t3
+    ===END OF OPERAND STACK===
+t3 = 10 assign (null)
+SEMANTIC: Exiting NodeType_Expr case
+Generating TAC for binary expression
+    ===OPERAND STACK===
+     - t4
+    ===END OF OPERAND STACK===
+t4 = t2 + t3
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_Expr
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_Expr
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - t5
+    ===END OF OPERAND STACK===
+t5 = a_var load (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - t5
+     - t6
+    ===END OF OPERAND STACK===
+t6 = a_var load (null)
+SEMANTIC: Exiting NodeType_Expr case
+Generating TAC for binary expression
+    ===OPERAND STACK===
+     - t7
+    ===END OF OPERAND STACK===
+t7 = t5 + t6
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_SimpleExpr
+Generating TAC for simple expression
+    ===OPERAND STACK===
+     - t7
+     - t8
+    ===END OF OPERAND STACK===
+t8 = 1 assign (null)
+SEMANTIC: Exiting NodeType_Expr case
+Generating TAC for binary expression
+    ===OPERAND STACK===
+     - t9
+    ===END OF OPERAND STACK===
+t9 = t7 + t8
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_Expr
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_Expr
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_Expr
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_Expr
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_Expr
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - t10
+    ===END OF OPERAND STACK===
+t10 = x_var load (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - t10
+     - t11
+    ===END OF OPERAND STACK===
+t11 = a_var load (null)
+SEMANTIC: Exiting NodeType_Expr case
+Generating TAC for binary expression
+    ===OPERAND STACK===
+     - t12
+    ===END OF OPERAND STACK===
+t12 = t10 + t11
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - t12
+     - t13
+    ===END OF OPERAND STACK===
+t13 = b_var load (null)
+SEMANTIC: Exiting NodeType_Expr case
+Generating TAC for binary expression
+    ===OPERAND STACK===
+     - t14
+    ===END OF OPERAND STACK===
+t14 = t12 + t13
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - t14
+     - t15
+    ===END OF OPERAND STACK===
+t15 = c_var load (null)
+SEMANTIC: Exiting NodeType_Expr case
+Generating TAC for binary expression
+    ===OPERAND STACK===
+     - t16
+    ===END OF OPERAND STACK===
+t16 = t14 + t15
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - t16
+     - t17
+    ===END OF OPERAND STACK===
+t17 = a_var load (null)
+SEMANTIC: Exiting NodeType_Expr case
+Generating TAC for binary expression
+    ===OPERAND STACK===
+     - t18
+    ===END OF OPERAND STACK===
+t18 = t16 + t17
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_SimpleExpr
+Generating TAC for simple expression
+    ===OPERAND STACK===
+     - t18
+     - t19
+    ===END OF OPERAND STACK===
+t19 = 5 assign (null)
+SEMANTIC: Exiting NodeType_Expr case
+Generating TAC for binary expression
+    ===OPERAND STACK===
+     - t20
+    ===END OF OPERAND STACK===
+t20 = t18 + t19
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+    Load var statement(null) = t21 write (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+    Load var statement(null) = t22 write (null)
+SEMANTIC: Recognized NodeType_StmtList
+
+=== TAC GENERATION ===
+TAC written to output/TAC.ir
+
+=== CODE OPTIMIZATION ===
+Rejected the following operation:
+t0 = 1 assign (null)
+Rejected the following operation:
+x_var = t0 store (null)
+Rejected the following operation:
+t1 = 12 assign (null)
+Rejected the following operation:
+a_var = t1 store (null)
+Rejected the following operation:
+t4 = 33 assign (null)
+Rejected the following operation:
+b_var = t4 store (null)
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t5 = a_var load (null)
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t6 = a_var load (null)
+Rejected the following operation:
+t7 = t5 + t5
+Rejected the following operation:
+t8 = 1 assign (null)
+Rejected the following operation:
+t9 = t7 + t8
+Rejected the following operation:
+x_var = t9 store (null)
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t10 = x_var load (null)
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t11 = a_var load (null)
+Rejected the following operation:
+t12 = t10 + t6
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t13 = b_var load (null)
+Rejected the following operation:
+t14 = t12 + t13
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t15 = c_var load (null)
+Rejected the following operation:
+t16 = t14 + t15
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t17 = a_var load (null)
+Rejected the following operation:
+t18 = t16 + t11
+Rejected the following operation:
+t19 = 5 assign (null)
+Rejected the following operation:
+t20 = t18 + t19
+Rejected the following operation:
+y_var = t20 store (null)
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t21 = x_var load (null)
+Rejected the following operation:
+(null) = t10 write (null)
+OPTIMIZER (copyPropagation): The following load operation was detected:
+t22 = y_var load (null)
+Rejected the following operation:
+(null) = t22 write (null)
+t0 = 1 assign (null)
+x_var = t0 store (null)
+t1 = 12 assign (null)
+a_var = t1 store (null)
+t4 = 33 assign (null)
+b_var = t4 store (null)
+t5 = a_var load (null)
+t6 = a_var load (null)
+t7 = t5 + t5
+t8 = 1 assign (null)
+t9 = t7 + t8
+x_var = t9 store (null)
+t10 = x_var load (null)
+t11 = a_var load (null)
+t12 = t10 + t6
+t13 = b_var load (null)
+t14 = t12 + t13
+t15 = c_var load (null)
+t16 = t14 + t15
+t17 = a_var load (null)
+t18 = t16 + t11
+t19 = 5 assign (null)
+t20 = t18 + t19
+y_var = t20 store (null)
+t21 = x_var load (null)
+(null) = t10 write (null)
+t22 = y_var load (null)
+(null) = t22 write (null)
+Optimized TAC written to output/TACOptimized.ir
+
+=== CODE GENERATION ===
+	li $t0, 1 #ASSIGN [t0 = 1 assign (null)]
+	sw $t0, t0
+	lw $t0, t0 #STORE [x_var = t0 store (null)]
+	sw $t0, x_var
+	li $t0, 12 #ASSIGN [t1 = 12 assign (null)]
+	sw $t0, t1
+	lw $t0, t1 #STORE [a_var = t1 store (null)]
+	sw $t0, a_var
+	li $t0, 33 #ASSIGN [t4 = 33 assign (null)]
+	sw $t0, t4
+	lw $t0, t4 #STORE [b_var = t4 store (null)]
+	sw $t0, b_var
+	lw $t0, a_var #LOAD [t5 = a_var load (null)]
+	sw $t0, t5
+	lw $t0, a_var #LOAD [t6 = a_var load (null)]
+	sw $t0, t6
+	lw $t0, t5 #ADD [t7 = t5 + t5]
+	lw $t1, t5
+	add $t0, $t0, $t1
+	sw $t0, t7
+	li $t0, 1 #ASSIGN [t8 = 1 assign (null)]
+	sw $t0, t8
+	lw $t0, t7 #ADD [t9 = t7 + t8]
+	lw $t1, t8
+	add $t0, $t0, $t1
+	sw $t0, t9
+	lw $t0, t9 #STORE [x_var = t9 store (null)]
+	sw $t0, x_var
+	lw $t0, x_var #LOAD [t10 = x_var load (null)]
+	sw $t0, t10
+	lw $t0, a_var #LOAD [t11 = a_var load (null)]
+	sw $t0, t11
+	lw $t0, t10 #ADD [t12 = t10 + t6]
+	lw $t1, t6
+	add $t0, $t0, $t1
+	sw $t0, t12
+	lw $t0, b_var #LOAD [t13 = b_var load (null)]
+	sw $t0, t13
+	lw $t0, t12 #ADD [t14 = t12 + t13]
+	lw $t1, t13
+	add $t0, $t0, $t1
+	sw $t0, t14
+	lw $t0, c_var #LOAD [t15 = c_var load (null)]
+	sw $t0, t15
+	lw $t0, t14 #ADD [t16 = t14 + t15]
+	lw $t1, t15
+	add $t0, $t0, $t1
+	sw $t0, t16
+	lw $t0, a_var #LOAD [t17 = a_var load (null)]
+	sw $t0, t17
+	lw $t0, t16 #ADD [t18 = t16 + t11]
+	lw $t1, t11
+	add $t0, $t0, $t1
+	sw $t0, t18
+	li $t0, 5 #ASSIGN [t19 = 5 assign (null)]
+	sw $t0, t19
+	lw $t0, t18 #ADD [t20 = t18 + t19]
+	lw $t1, t19
+	add $t0, $t0, $t1
+	sw $t0, t20
+	lw $t0, t20 #STORE [y_var = t20 store (null)]
+	sw $t0, y_var
+	lw $t0, x_var #LOAD [t21 = x_var load (null)]
+	sw $t0, t21
+	lw $a0, t10 #WRITE [(null) = t10 write (null)]
+	li $v0, 1
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	lw $t0, y_var #LOAD [t22 = y_var load (null)]
+	sw $t0, t22
+	lw $a0, t22 #WRITE [(null) = t22 write (null)]
+	li $v0, 1
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+MIPS code generated and saved to file output/output.asm
