@@ -58,10 +58,12 @@ extern int yydebug;
     ID = 259,                      /* ID  */
     SEMI = 260,                    /* SEMI  */
     ASSIGN = 261,                  /* ASSIGN  */
-    PLUS = 262,                    /* PLUS  */
-    MINUS = 263,                   /* MINUS  */
-    NUMBER = 264,                  /* NUMBER  */
-    WRITE = 265                    /* WRITE  */
+    INT_NUMBER = 262,              /* INT_NUMBER  */
+    WRITE = 263,                   /* WRITE  */
+    PLUS = 264,                    /* PLUS  */
+    MINUS = 265,                   /* MINUS  */
+    MULTIPLY = 266,                /* MULTIPLY  */
+    DIVIDE = 267                   /* DIVIDE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -70,13 +72,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 34 "parser.y"
+#line 36 "parser.y"
 
-	char* sval;
-	int intVal;
-	struct ASTNode* ast;
+    char* sval;
+    int intVal;
+    float floatVal;
+    struct ASTNode* ast;
 
-#line 80 "parser.tab.h"
+#line 83 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -129,6 +129,40 @@ void generateMIPS(TAC* tacInstructions) {
             deallocateRegister(regIndex1);
             deallocateRegister(regIndex2);
 
+        } else if (strcmp(current->op, "*") == 0) {
+            //SUB (sum 2 vars)
+            //  lw $t0, tempVar1 (load word (int))
+            //  lw $t1, tempVar2
+            //  sub $t0, $t0, $t1 (sum registers)
+            //  sw $t0, tempVar3 (store word (int))
+
+            //registers required: 2
+            int regIndex1, regIndex2;
+
+            // Handle addition: t2 = t0 + t1
+            regIndex1 = allocateRegister();
+            if (regIndex1 == -1) {
+                printf("Error: No available registers\n");
+                return;
+            }
+            regIndex2 = allocateRegister();
+            if (regIndex2 == -1) {
+                printf("Error: No available registers\n");
+                return;
+            }
+
+            printf("\tlw %s, %s #MUL [%s = %s %s %s]\n", tempRegisters[regIndex1].name, current->arg1, current->result, current->arg1, current->op, current->arg2); // Load word
+            fprintf(outputFile, "\tlw %s, %s #MULTIPLY [%s = %s %s %s]\n", tempRegisters[regIndex1].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+            printf("\tlw %s, %s\n", tempRegisters[regIndex2].name, current->arg2);                          // Load word
+            fprintf(outputFile, "\tlw %s, %s\n", tempRegisters[regIndex2].name, current->arg2);
+            printf("\tmult %s, %s, %s\n", tempRegisters[regIndex1].name, tempRegisters[regIndex1].name, tempRegisters[regIndex2].name);      //Subtract
+            fprintf(outputFile, "\tmul %s, %s, %s\n", tempRegisters[regIndex1].name, tempRegisters[regIndex1].name, tempRegisters[regIndex2].name); // Store word
+            printf("\tsw %s, %s\n", tempRegisters[regIndex1].name, current->result); 
+            fprintf(outputFile, "\tsw %s, %s\n", tempRegisters[regIndex1].name, current->result);
+
+            deallocateRegister(regIndex1);
+            deallocateRegister(regIndex2);
+
         } else if (strcmp(current->op, "write") == 0) {
             //WRITE (display var to console)
             //  lw $t0, tempVar (load word (int))
@@ -214,6 +248,14 @@ void generateMIPS(TAC* tacInstructions) {
     fprintf(outputFile, "\tli $v0, 10\n\tsyscall\n");
 }
 
+// void generateMIPSDivision()
+// {
+
+// }
+
+
+
+
 void declareMipsVars(const SymbolTable* table)
 {
     //Workaround: TABLE_SIZE can't be used here. Maybe declare it in SymbolTable?
@@ -222,7 +264,10 @@ void declareMipsVars(const SymbolTable* table)
         Symbol* current = table->table[i];
         while (current)
         {
-            fprintf(outputFile, "\t%s: .word 0\n", current->name);
+            if (strcmp(current->type, "int") == 0)
+                fprintf(outputFile, "\t%s: .word 0\n", current->name);
+            else if (strcmp(current->type, "float") == 0)
+                fprintf(outputFile, "\t%s: .float 0.0\n", current->name);
             current = current->next;
         }
     }

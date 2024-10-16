@@ -21,7 +21,7 @@ extern TAC* tacTail;   // Global head of the TAC list
 extern int tempVarCount;
 
 void semanticAnalysis(ASTNode* node, SymbolTable* symTab);  // Semantic analysis function
-TAC* generateTACForExpr(ASTNode* expr);  // TAC generation for expressions
+TAC* generateTACForBinOp(ASTNode* expr);  // TAC generation for expressions
 TAC* generateTACForWrite(ASTNode* writeStmt); // TAC generation for write statement
 TAC* generateTACForAssign(ASTNode* assignStmt); // TAC generation for write statement
 char* createTempVar();   // Create temporary variables for TAC

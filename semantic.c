@@ -49,26 +49,26 @@ void semanticAnalysis(ASTNode* node, SymbolTable* symTab) {
             semanticAnalysis(node->data.assignStmt.expr, symTab);  // Analyze the right-hand side expression
             break;
 
-        case NodeType_Expr:
-            printf("SEMANTIC: Recognized NodeType_Expr\n");
-            printf("SEMANTIC: Entering left...\n");
-            semanticAnalysis(node->data.expr.left, symTab);
-            printf("SEMANTIC: Entering right...\n");
-            semanticAnalysis(node->data.expr.right, symTab);
-            printf("SEMANTIC: Exiting NodeType_Expr case\n");
-            break;
-
         case NodeType_BinOp:
             printf("SEMANTIC: Recognized NodeType_BinOp\n");
-            if (lookupSymbol(symTab, node->data.binOp.left->data.varDecl.varName) == NULL) {
-                fprintf(stderr, "Semantic error: Variable '%s' not declared\n", node->data.binOp.left->data.varDecl.varName);
-            }
-            if (lookupSymbol(symTab, node->data.binOp.right->data.varDecl.varName) == NULL) {
-                fprintf(stderr, "Semantic error: Variable '%s' not declared\n", node->data.binOp.right->data.varDecl.varName);
-            }
+            printf("SEMANTIC: Entering left...\n");
             semanticAnalysis(node->data.binOp.left, symTab);
+            printf("SEMANTIC: Entering right...\n");
             semanticAnalysis(node->data.binOp.right, symTab);
+            printf("SEMANTIC: Exiting NodeType_BinOp case\n");
             break;
+
+        // case NodeType_BinOp:
+        //     printf("SEMANTIC: Recognized NodeType_BinOp\n");
+        //     if (lookupSymbol(symTab, node->data.binOp.left->data.varDecl.varName) == NULL) {
+        //         fprintf(stderr, "Semantic error: Variable '%s' not declared\n", node->data.binOp.left->data.varDecl.varName);
+        //     }
+        //     if (lookupSymbol(symTab, node->data.binOp.right->data.varDecl.varName) == NULL) {
+        //         fprintf(stderr, "Semantic error: Variable '%s' not declared\n", node->data.binOp.right->data.varDecl.varName);
+        //     }
+        //     semanticAnalysis(node->data.binOp.left, symTab);
+        //     semanticAnalysis(node->data.binOp.right, symTab);
+        //     break;
 
         case NodeType_SimpleID:
             printf("SEMANTIC: Recognized NodeType_SimpleID\n");
@@ -77,8 +77,8 @@ void semanticAnalysis(ASTNode* node, SymbolTable* symTab) {
             }
             break;
 
-        case NodeType_SimpleExpr:
-            printf("SEMANTIC: Recognized NodeType_SimpleExpr\n");
+        case NodeType_IntExpr:
+            printf("SEMANTIC: Recognized NodeType_IntExpr\n");
             // No checks necessary for numbers
             break;
 
@@ -94,8 +94,8 @@ void semanticAnalysis(ASTNode* node, SymbolTable* symTab) {
             break;
     }
 
-    if (node->type == NodeType_Expr || node->type == NodeType_SimpleExpr || node->type == NodeType_SimpleID) {
-        TAC* tac = generateTACForExpr(node);
+    if (node->type == NodeType_BinOp || node->type == NodeType_IntExpr || node->type == NodeType_SimpleID) {
+        TAC* tac = generateTACForBinOp(node);
         printTAC(tac);
     } else if (node->type == NodeType_WriteStmt) {
         TAC* tac = generateTACForWrite(node);
@@ -107,16 +107,16 @@ void semanticAnalysis(ASTNode* node, SymbolTable* symTab) {
 }
 
 // Generate TAC for expressions
-TAC* generateTACForExpr(ASTNode* expr) {
+TAC* generateTACForBinOp(ASTNode* expr) {
     if (!expr) return NULL;
 
     TAC* instruction = (TAC*)malloc(sizeof(TAC));
     if (!instruction) return NULL;
 
     switch (expr->type) {
-        case NodeType_Expr: {   //Complex expression (2+ operands)
-            printf("Generating TAC for binary expression\n");
-            
+        case NodeType_BinOp: {   //Complex expression (2+ operands)
+            printf("Generating TAC for binary expression\n");            
+
             //Pop 2 operands from the stack
             Operand* arg2Operand = popOperand();    //IMPORTANT: Pop arg2 first! We need to preserve non-associative operations
             Operand* arg1Operand = popOperand();
@@ -125,26 +125,45 @@ TAC* generateTACForExpr(ASTNode* expr) {
             freeOperand(arg1Operand);
             freeOperand(arg2Operand);
 
-            instruction->op = strdup(expr->data.expr.operator);  // Get operator
+            // TEMPORARY: Floats and Ints cannot be combined in an expression for now
+            if (arg1Operand->operandType == arg2Operand->operandType)
+            {
+                printf("ERROR: Binary operator does not support int-to-float conversion!\n");
+                exit(1);
+            }
+
+
+            // Specify the result type of this binary op
+            //      TODO: Once int-to-float conversion is supported, decide what happens when an int and float are added/multiplied/divided/etc.
+            char buffer[20];
+            if (arg1Operand->operandType == OperandType_Int)
+            {
+                snprintf(buffer, 20, "%d.int", expr->data.intExpr.number);
+            }
+            else if (arg1Operand->operandType == OperandType_Int)
+            {
+                snprintf(buffer, 20, "%d.float", expr->data.intExpr.number);
+            }
+            // instruction->op = strdup(expr->data.binOp.operator);  // Get operator
             instruction->result = createTempVar();
             
             //Push operand to stack to use in ongoing BinOp
-            Operand* newOperand = createOperandStruct(instruction->result);
+            Operand* newOperand = createOperandStruct(instruction->result, OperandType_Int);
             pushOperand(newOperand);
             printOperandStack();
             break;
         }
 
-        case NodeType_SimpleExpr: { //Constant
+        case NodeType_IntExpr: { //Constant
             printf("Generating TAC for simple expression\n");
             char buffer[20];
-            snprintf(buffer, 20, "%d", expr->data.simpleExpr.number);
+            snprintf(buffer, 20, "%d", expr->data.intExpr.number);
             instruction->arg1 = strdup(buffer);
             instruction->op = strdup("assign");
             instruction->result = createTempVar();
             
             //Push operand to stack to use in ongoing BinOp
-            Operand* newOperand = createOperandStruct(instruction->result);
+            Operand* newOperand = createOperandStruct(instruction->result, OperandType_Int);
             pushOperand(newOperand);
             printOperandStack();
             break;
@@ -157,7 +176,7 @@ TAC* generateTACForExpr(ASTNode* expr) {
             instruction->result = createTempVar();
             
             //Push operand to stack to use in ongoing BinOp
-            Operand* newOperand = createOperandStruct(instruction->result);
+            Operand* newOperand = createOperandStruct(instruction->result, OperandType_Int);
             pushOperand(newOperand);
             printOperandStack();
             break;

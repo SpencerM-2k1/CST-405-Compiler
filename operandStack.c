@@ -6,10 +6,11 @@
 Operand* operandStack[OPERAND_STACK_SIZE];
 int operandCursor = 0;
 
-Operand* createOperandStruct(char* opString)
+Operand* createOperandStruct(char* opString, OperandType type)
 {
     Operand* newOperand = malloc(sizeof(Operand));
     newOperand->operandID = strdup(opString);
+    newOperand->operandType = type;
     return newOperand;
 }
 

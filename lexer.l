@@ -14,12 +14,13 @@ bool errorFound = false;
 %%
 
 "int"               { yylval.sval = strdup(yytext); return TYPE; }
-"char"              { yylval.sval = strdup(yytext); return TYPE; }
+"float"             { yylval.sval = strdup(yytext); return TYPE; }
 "write"             { return WRITE; }
 [a-zA-Z_][a-zA-Z0-9_]* { yylval.sval = strdup(yytext); return ID; }
-[0-9]+              { yylval.intVal = atoi(strdup(yytext)); return NUMBER; } //atoi: conversion to int
+[0-9]+              { yylval.intVal = atoi(strdup(yytext)); return INT_NUMBER; } //atoi: conversion to int
 "+"                 { yylval.sval = strdup(yytext); return PLUS; }
 "-"                 { yylval.sval = strdup(yytext); return MINUS; }
+"*"                 { yylval.sval = strdup(yytext); return MULTIPLY; }
 "="                 { yylval.sval = strdup(yytext); return ASSIGN; }
 ";"                 { return SEMI; }
 [ \t\r]+            { /* Skip whitespace */ }

@@ -13,7 +13,7 @@ OPTIMIZER = optimizer.c
 OPERAND_STACK = operandStack.c
 
 # Header Files
-HEADERS = AST.h codeGenerator.h symbolTable.h semantic.h parser.tab.h operandStack.h
+HEADERS = AST.h codeGenerator.h symbolTable.h semantic.h parser.tab.h operandStack.h codeGenerator.h
 
 # Object Files
 OBJS = $(LEXER:.c=.o) $(PARSER:.c=.o) $(AST:.c=.o) $(SYMBOL_TABLE:.c=.o) $(SEMANTIC:.c=.o) $(CODE_GENERATOR:.c=.o) $(OPTIMIZER:.c=.o) $(OPERAND_STACK:.c=.o)
@@ -74,7 +74,7 @@ test3: $(EXEC)
 
 # Debug with gdb
 debug: $(EXEC)
-	gdb --args $(EXEC) $(INPUT_DIR)/classProg.cmm
+	gdb --args $(EXEC) $(INPUT_DIR)/testProg1.cmm
 
 # Clean rule to remove compiled files
 clean:

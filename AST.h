@@ -10,12 +10,11 @@ typedef enum {
     NodeType_Program,
     NodeType_VarDeclList, 
     NodeType_VarDecl, 
-    NodeType_SimpleExpr,
+    NodeType_IntExpr,
     NodeType_SimpleID,
-    NodeType_Expr, 
+    NodeType_BinOp, 
     NodeType_StmtList,
     NodeType_AssignStmt,
-    NodeType_BinOp, 
     NodeType_WriteStmt,
 } NodeType;
 
@@ -41,20 +40,20 @@ typedef struct ASTNode {
             char* varName;
         } varDecl;
 
-        struct SimpleExprNode {
+        struct IntExprNode {
             int number;
             // char* number;
-        } simpleExpr;
+        } intExpr;
 
         struct SimpleIDNode {
             char* name;
         } simpleID;
 
-        struct ExprNode {
+        struct BinOpNode {
             char* operator;
             struct ASTNode* left;
             struct ASTNode* right;
-        } expr;
+        } binOp;
 
         struct StmtListNode {
             struct ASTNode* stmt;
@@ -67,11 +66,11 @@ typedef struct ASTNode {
             struct ASTNode* expr;
         } assignStmt;
 
-        struct BinOpNode {
-            char* operator;
-            struct ASTNode* left;
-            struct ASTNode* right;
-        } binOp;
+        // struct BinOpNode {
+        //     char* operator;
+        //     struct ASTNode* left;
+        //     struct ASTNode* right;
+        // } binOp;
 
         struct WriteStmtNode {
             char* varName;

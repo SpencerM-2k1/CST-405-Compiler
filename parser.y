@@ -31,24 +31,36 @@ Symbol* symbol = NULL;
 
 %}
 
+%printer { fprintf(yyoutput, "%s", $$); } ID;
+
 %union {
-	char* sval;
-	int intVal;
-	struct ASTNode* ast;
+    char* sval;
+    int intVal;
+    float floatVal;
+    struct ASTNode* ast;
 }
 
 %token <sval> TYPE
 %token <sval> ID
-%token <sval> SEMI
+%token SEMI
 %token <sval> ASSIGN
-%token <sval> PLUS
-%token <sval> MINUS
-%token <intVal> NUMBER
-%token <sval> WRITE
+/* %token PLUS MINUS MULTIPLY DIVIDE POWER */
+%token <intVal> INT_NUMBER
+/* %token <floatVal> FLOAT_NUMBER */
+%token WRITE
+/* %token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA */
+/* %token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA */
+/* %token FUNCTION RETURN ARRAY */
 
-%printer { fprintf(yyoutput, "%s", $$); } ID;
+%left <sval> PLUS MINUS
+%left <sval> MULTIPLY DIVIDE
+/* %right POWER */
+/* %nonassoc UMINUS */
 
 %type <ast> Program VarDecl VarDeclList Stmt StmtList Expr BinOp Term
+/* %type <ast> FuncDeclList FuncDecl FuncCall ParamList ArgList */
+/* %type <ast> ArrayDecl ArrayIndex */
+
 %start Program
 
 %%
@@ -154,19 +166,56 @@ Stmt: ID ASSIGN Expr SEMI { /* code TBD */
 					}
 ;
 
-Expr: Expr BinOp Term { printf("PARSER: Recognized expression\n");
-						$$ = createNode(NodeType_Expr);
-						$$->data.expr.left = $1;
-						$$->data.expr.right = $3;
-						$$->data.expr.operator = strdup($2->data.binOp.operator);
+Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
+						$$ = createNode(NodeType_BinOp);
+						$$->data.binOp.left = $1;
+						$$->data.binOp.right = $3;
+						// $$->data.binOp.operator = strdup($2->data.binOp.operator);
+						$$->data.binOp.operator = strdup($2);
 						
 						// Set other fields as necessary
 					  }
- 					
-	| Term {/*No code necessary, this just makes Expr left-recursive*/}
+ 	| Expr MINUS Expr { printf("PARSER: Recognized expression\n");
+						$$ = createNode(NodeType_BinOp);
+						$$->data.binOp.left = $1;
+						$$->data.binOp.right = $3;
+						// $$->data.binOp.operator = strdup($2->data.binOp.operator);
+						$$->data.binOp.operator = strdup($2);
+						
+						// Set other fields as necessary
+					  }
+	| Expr MULTIPLY Expr { printf("PARSER: Recognized expression\n");
+						$$ = createNode(NodeType_BinOp);
+						$$->data.binOp.left = $1;
+						$$->data.binOp.right = $3;
+						// $$->data.binOp.operator = strdup($2->data.binOp.operator);
+						$$->data.binOp.operator = strdup($2);
+						
+						// Set other fields as necessary
+					  }
+	| ID { printf("ASSIGNMENT statement \n"); 
+			$$ = malloc(sizeof(ASTNode));
+			$$->type = NodeType_SimpleID;
+
+			//Append _var to the end of the variable name
+			// char varName[MAX_ID_LENGTH];
+			char* varName = getMipsVarName($1);
+
+			// $$->data.simpleID.name = $1;
+			$$->data.simpleID.name = varName;
+			// Set other fields as necessary	
+		}
+	| INT_NUMBER { 
+				printf("PARSER: Recognized number\n");
+				$$ = malloc(sizeof(ASTNode));
+				$$->type = NodeType_IntExpr;
+				$$->data.intExpr.number = $1;
+				// Set other fields as necessary
+			 }
+			 /*TODO: FLOAT_NUMBER*/
 ;
 
-Term: ID { printf("ASSIGNMENT statement \n"); 
+/* Term: ID { printf("ASSIGNMENT statement \n"); 
 			$$ = malloc(sizeof(ASTNode));
 			$$->type = NodeType_SimpleID;
 
@@ -181,12 +230,12 @@ Term: ID { printf("ASSIGNMENT statement \n");
 	| NUMBER { 
 				printf("PARSER: Recognized number\n");
 				$$ = malloc(sizeof(ASTNode));
-				$$->type = NodeType_SimpleExpr;
-				$$->data.simpleExpr.number = $1;
+				$$->type = NodeType_IntExpr;
+				$$->data.intExpr.number = $1;
 				// Set other fields as necessary
-			 }
+			 } */
 
-BinOp: PLUS {
+/* BinOp: PLUS {
 				printf("PARSER: Recognized binary operator\n");
 				$$ = malloc(sizeof(ASTNode));
 				$$->type = NodeType_BinOp;
@@ -202,7 +251,7 @@ BinOp: PLUS {
 				$$->data.binOp.operator = $1;
 				// printf(" - PARSER: %s\n", $$->data.binOp.operator);
 				// Set other fields as necessary
-            }
+            } */
 ;
 
 %%
@@ -232,7 +281,6 @@ int main(int argc, char **argv) {
         // Successfully parsed
 		printf("Parsing successful!\n");
         traverseAST(root, 0, drawVertical, false);
-        /* traverseAST(root, 0); */
 		// Print symbol table for debugging
 		printSymbolTable(symTab);
 		// Semantic analysis
@@ -246,8 +294,8 @@ int main(int argc, char **argv) {
 		// Traverse the linked list of TAC entries and optimize
 		// But - you MIGHT need to traverse the AST again to optimize
 
-		optimizeTAC(tacHead);
-		printOptimizedTAC("output/TACOptimized.ir", tacHead);
+		/* optimizeTAC(tacHead); */
+		/* printOptimizedTAC("output/TACOptimized.ir", tacHead); */
 
 		// Code generation
 		printf("\n=== CODE GENERATION ===\n");
