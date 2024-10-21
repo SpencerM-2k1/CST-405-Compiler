@@ -1,9 +1,9 @@
-int x;
-int y;
-int z;
-x = 5 + 3;
-y = 5 - 2;
-z = x - y + 9;
+float x;
+float y;
+float z;
+x = 5.3 + 3.6;
+y = 1.2 - 2.86;
+z = x * y / 3.2;
 write x;
 write y;
 write z;

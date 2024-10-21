@@ -12,11 +12,14 @@ CODE_GENERATOR = codeGenerator.c
 OPTIMIZER = optimizer.c
 OPERAND_STACK = operandStack.c
 
+TYPES = commons/types.c
+
 # Header Files
-HEADERS = AST.h codeGenerator.h symbolTable.h semantic.h parser.tab.h operandStack.h codeGenerator.h
+HEADERS = AST.h codeGenerator.h symbolTable.h semantic.h parser.tab.h operandStack.h codeGenerator.h commons/types.h
+# COMMONS = types.h
 
 # Object Files
-OBJS = $(LEXER:.c=.o) $(PARSER:.c=.o) $(AST:.c=.o) $(SYMBOL_TABLE:.c=.o) $(SEMANTIC:.c=.o) $(CODE_GENERATOR:.c=.o) $(OPTIMIZER:.c=.o) $(OPERAND_STACK:.c=.o)
+OBJS = $(LEXER:.c=.o) $(PARSER:.c=.o) $(AST:.c=.o) $(SYMBOL_TABLE:.c=.o) $(SEMANTIC:.c=.o) $(CODE_GENERATOR:.c=.o) $(OPTIMIZER:.c=.o) $(OPERAND_STACK:.c=.o) $(TYPES:.c=.o)
 
 # Output executable
 EXEC = parser
@@ -24,6 +27,7 @@ EXEC = parser
 # Directory to store MIPS output
 INPUT_DIR = samples
 OUTPUT_DIR = output
+# COMMONS_DIR = commons
 
 # Default rule to build the executable
 all: $(EXEC)
@@ -71,10 +75,9 @@ test3: $(EXEC)
 	@echo "MIPS code saved to $(OUTPUT_DIR)/output.asm"
 	@echo "Output log saved to $(OUTPUT_DIR)/output.txt"
 
-
 # Debug with gdb
 debug: $(EXEC)
-	gdb --args $(EXEC) $(INPUT_DIR)/testProg1.cmm
+	gdb --args $(EXEC) $(INPUT_DIR)/testProg2.cmm
 
 # Clean rule to remove compiled files
 clean:

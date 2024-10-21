@@ -18,9 +18,11 @@ bool errorFound = false;
 "write"             { return WRITE; }
 [a-zA-Z_][a-zA-Z0-9_]* { yylval.sval = strdup(yytext); return ID; }
 [0-9]+              { yylval.intVal = atoi(strdup(yytext)); return INT_NUMBER; } //atoi: conversion to int
+[0-9]+\.[0-9]+      { yylval.floatVal = atof(yytext); return FLOAT_NUMBER; }
 "+"                 { yylval.sval = strdup(yytext); return PLUS; }
 "-"                 { yylval.sval = strdup(yytext); return MINUS; }
 "*"                 { yylval.sval = strdup(yytext); return MULTIPLY; }
+"/"                 { yylval.sval = strdup(yytext); return MULTIPLY; }
 "="                 { yylval.sval = strdup(yytext); return ASSIGN; }
 ";"                 { return SEMI; }
 [ \t\r]+            { /* Skip whitespace */ }

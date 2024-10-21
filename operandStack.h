@@ -1,16 +1,13 @@
 #ifndef OPERAND_STACK_H
 #define OPERAND_STACK_H
 
-#define OPERAND_STACK_SIZE 100
+#include "commons/types.h"
 
-typedef enum {
-    OperandType_Int,
-    OperandType_Float,
-}OperandType;
+#define OPERAND_STACK_SIZE 100
 
 typedef struct Operand{
     char* operandID;
-    OperandType operandType;
+    VarType operandType;
 }Operand;
 
 // extern Operand* operandStack[OPERAND_STACK_SIZE];
@@ -21,7 +18,7 @@ extern int operandCursor;
 
 // void initOperandStack();
 
-Operand* createOperandStruct(char* opString, OperandType type);
+Operand* createOperandStruct(char* opString, VarType type);
 void freeOperand(Operand* op);
 
 void pushOperand(Operand* op);

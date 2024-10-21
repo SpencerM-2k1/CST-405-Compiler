@@ -6,7 +6,7 @@
 Operand* operandStack[OPERAND_STACK_SIZE];
 int operandCursor = 0;
 
-Operand* createOperandStruct(char* opString, OperandType type)
+Operand* createOperandStruct(char* opString, VarType type)
 {
     Operand* newOperand = malloc(sizeof(Operand));
     newOperand->operandID = strdup(opString);
@@ -44,6 +44,7 @@ Operand* popOperand() {
         Operand* returnOperand;
         operandCursor--;
         returnOperand = operandStack[operandCursor];
+        // printf("returnOperand->operandID: %s\n",returnOperand->operandID);
         return returnOperand;
     }
     else

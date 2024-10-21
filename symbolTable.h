@@ -1,12 +1,14 @@
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
+#include "commons/types.h"
+
 #define TABLE_SIZE 100  // Adjust size as needed
 
 // Define the structure for a symbol
 typedef struct Symbol {
     char* name;
-    char* type;
+    VarType type;
     int scopeLevel;
     struct Symbol* next;  // For linked list of symbols in case of hash collisions
 } Symbol;
@@ -23,7 +25,7 @@ void initSymbolTable(SymbolTable* symTab);
 void freeSymbolTable(SymbolTable* symTab);
 void enterScope(SymbolTable* table);
 void exitScope(SymbolTable* table);
-void addSymbol(SymbolTable* symTab, const char* varName, const char* varType);
+void addSymbol(SymbolTable* symTab, const char* varName, const char* typeString);
 Symbol* lookupSymbol(SymbolTable* symTab, const char* varName);
 Symbol* lookupSymbolInCurrentScope(SymbolTable* symTab, const char* varName);
 void printSymbolTable(SymbolTable* symTab);

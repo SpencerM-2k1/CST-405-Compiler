@@ -1,4 +1,5 @@
 #include "symbolTable.h"
+#include "commons/types.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -54,7 +55,7 @@ void freeSymbolTable(SymbolTable* symTab) {
         while (sym) {
             Symbol* nextSym = sym->next;
             free(sym->name);
-            free(sym->type);
+            // free(sym->type);
             free(sym);
             sym = nextSym;
         }
@@ -74,16 +75,27 @@ void exitScope(SymbolTable* table) {
 }
 
 // Add a symbol to the symbol table
-void addSymbol(SymbolTable* table, const char* name, const char* type) {
+void addSymbol(SymbolTable* table, const char* name, const char* typeString) {
     if (lookupSymbolInCurrentScope(table, name)) {
         printf("Error: Symbol '%s' already exists in the current scope.\n", name);
         return;
     }
 
+    VarType type;
+    if (strcmp(typeString, "int") == 0) {
+        type = VarType_Int;
+    } else if (strcmp(typeString, "float") == 0) {
+        type = VarType_Float;
+    } else {
+        printf("ERROR: VarType not recognized. Halting compilation...");
+        exit(1);
+    }
+
     unsigned int hashval = hash(name, TABLE_SIZE);
     Symbol* newSymbol = (Symbol*)malloc(sizeof(Symbol));
     newSymbol->name = strdup(name);
-    newSymbol->type = strdup(type);
+    printf("newSymbol->name: %s\n",newSymbol->name);
+    newSymbol->type = type;
     newSymbol->scopeLevel = table->currentScope;
     newSymbol->next = table->table[hashval];
     table->table[hashval] = newSymbol;
@@ -117,7 +129,7 @@ void printSymbolTable(SymbolTable* table) {
     for (int i = 0; i < TABLE_SIZE; i++) {
         Symbol* sym = table->table[i];
         while (sym != NULL) {
-            printf("Name: %s, Type: %s, Scope Level: %d\n", sym->name, sym->type, sym->scopeLevel);
+            printf("Name: %s, Type: %s, Scope Level: %d\n", sym->name, varTypeToString(sym->type), sym->scopeLevel);
             sym = sym->next;
         }
     }

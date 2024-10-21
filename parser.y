@@ -46,7 +46,7 @@ Symbol* symbol = NULL;
 %token <sval> ASSIGN
 /* %token PLUS MINUS MULTIPLY DIVIDE POWER */
 %token <intVal> INT_NUMBER
-/* %token <floatVal> FLOAT_NUMBER */
+%token <floatVal> FLOAT_NUMBER
 %token WRITE
 /* %token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA */
 /* %token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA */
@@ -57,7 +57,7 @@ Symbol* symbol = NULL;
 /* %right POWER */
 /* %nonassoc UMINUS */
 
-%type <ast> Program VarDecl VarDeclList Stmt StmtList Expr BinOp Term
+%type <ast> Program VarDecl VarDeclList Stmt StmtList Expr
 /* %type <ast> FuncDeclList FuncDecl FuncCall ParamList ArgList */
 /* %type <ast> ArrayDecl ArrayIndex */
 
@@ -166,6 +166,7 @@ Stmt: ID ASSIGN Expr SEMI { /* code TBD */
 					}
 ;
 
+//TODO: Exponent binOp
 Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
 						$$ = createNode(NodeType_BinOp);
 						$$->data.binOp.left = $1;
@@ -193,6 +194,15 @@ Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
 						
 						// Set other fields as necessary
 					  }
+	| Expr DIVIDE Expr { printf("PARSER: Recognized expression\n");
+						$$ = createNode(NodeType_BinOp);
+						$$->data.binOp.left = $1;
+						$$->data.binOp.right = $3;
+						// $$->data.binOp.operator = strdup($2->data.binOp.operator);
+						$$->data.binOp.operator = strdup($2);
+						
+						// Set other fields as necessary
+					  }
 	| ID { printf("ASSIGNMENT statement \n"); 
 			$$ = malloc(sizeof(ASTNode));
 			$$->type = NodeType_SimpleID;
@@ -206,10 +216,17 @@ Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
 			// Set other fields as necessary	
 		}
 	| INT_NUMBER { 
-				printf("PARSER: Recognized number\n");
+				printf("PARSER: Recognized int number\n");
 				$$ = malloc(sizeof(ASTNode));
 				$$->type = NodeType_IntExpr;
 				$$->data.intExpr.number = $1;
+				// Set other fields as necessary
+			 }
+	| FLOAT_NUMBER { 
+				printf("PARSER: Recognized float number\n");
+				$$ = malloc(sizeof(ASTNode));
+				$$->type = NodeType_FloatExpr;
+				$$->data.floatExpr.number = $1;
 				// Set other fields as necessary
 			 }
 			 /*TODO: FLOAT_NUMBER*/
@@ -285,7 +302,8 @@ int main(int argc, char **argv) {
 		printSymbolTable(symTab);
 		// Semantic analysis
 		printf("\n=== SEMANTIC ANALYSIS ===\n\n");
-		semanticAnalysis(root, symTab);
+		initSemantic(symTab);
+		semanticAnalysis(root);
 		printf("\n=== TAC GENERATION ===\n");
 		printTACToFile("output/TAC.ir", tacHead);
 
@@ -299,8 +317,10 @@ int main(int argc, char **argv) {
 
 		// Code generation
 		printf("\n=== CODE GENERATION ===\n");
-		initCodeGenerator("output/output.asm", symTab);
-		generateMIPS(tacHead);
+		/* initCodeGenerator("output/output.asm", symTab); */
+		initCodeGenerator("output/output.asm");
+		/* generateMIPS(tacHead); */
+		generateMIPS(tacHead, symTab);
 		finalizeCodeGenerator("output/output.asm");
 
         freeAST(root);

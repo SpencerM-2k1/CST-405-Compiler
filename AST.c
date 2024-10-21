@@ -84,6 +84,10 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
         case NodeType_IntExpr:
             printf("IntExpr: %d\n", node->data.intExpr.number);
             break;
+        
+        case NodeType_FloatExpr:
+            printf("FloatExpr: %f\n", node->data.floatExpr.number);
+            break;
 
         case NodeType_SimpleID:
             printf("SimpleID: %s\n", node->data.simpleID.name);

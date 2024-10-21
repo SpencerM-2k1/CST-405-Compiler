@@ -11,6 +11,7 @@ typedef enum {
     NodeType_VarDeclList, 
     NodeType_VarDecl, 
     NodeType_IntExpr,
+    NodeType_FloatExpr,
     NodeType_SimpleID,
     NodeType_BinOp, 
     NodeType_StmtList,
@@ -42,8 +43,11 @@ typedef struct ASTNode {
 
         struct IntExprNode {
             int number;
-            // char* number;
         } intExpr;
+
+        struct FloatExprNode {
+            float number;
+        } floatExpr;
 
         struct SimpleIDNode {
             char* name;

@@ -3,6 +3,7 @@
 
 #include "AST.h"         // AST structure definitions
 #include "symbolTable.h" // Symbol Table structure definitions
+#include "commons/types.h" //Enum listing valid var types
 
 // TAC structure for Intermediate Representation (IR)
 //  > Doubly-linked list
@@ -15,19 +16,33 @@ typedef struct TAC {
     struct TAC* next; // Pointer to the next TAC instruction
 } TAC;
 
+// typedef struct tempVar {
+//     char* id;
+//     VarType type;
+// } TempVar;
+
 extern TAC* tacHead;   // Global head of the TAC list
 extern TAC* tacTail;   // Global head of the TAC list
 
-extern int tempVarCount;
+extern SymbolTable* symTabRef; //
 
-void semanticAnalysis(ASTNode* node, SymbolTable* symTab);  // Semantic analysis function
+// extern int tempVarCount;
+extern int tempIntCount;
+extern int tempFloatCount;
+
+void initSemantic(SymbolTable* symbolTable); //Initialize
+void semanticAnalysis(ASTNode* node);  // Semantic analysis function
 TAC* generateTACForBinOp(ASTNode* expr);  // TAC generation for expressions
 TAC* generateTACForWrite(ASTNode* writeStmt); // TAC generation for write statement
 TAC* generateTACForAssign(ASTNode* assignStmt); // TAC generation for write statement
-char* createTempVar();   // Create temporary variables for TAC
+char* createTempVar(VarType type);   // Create temporary variables for TAC
+// char* createTempVar();   // Create temporary variables for TAC
 char* createOperand(ASTNode* node);   // Create operand strings for TAC
 void printTAC(TAC* tac);  // Print TAC to console
 void printTACToFile(const char* filename, TAC* tac);  // Print TAC to a file
+// int getTempVarCount();
+int getTempIntCount();
+float getTempFloatCount();
 void appendTAC(TAC** head, TAC** tail, TAC* newInstruction);  // Append TAC to the list
 
 //Manual TAC methods
