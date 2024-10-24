@@ -1,0 +1,1095 @@
+PARSER: Printing symbol table
+Symbol Table:
+PARSER: Checking if variable has already been declared
+Name with suffix: intArray_var
+newSymbol->name: intArray_var
+Symbol Table:
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+PARSER: Printing symbol table
+Symbol Table:
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+PARSER: Checking if variable has already been declared
+Name with suffix: floatArray_var
+newSymbol->name: floatArray_var
+Symbol Table:
+Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+PARSER: Recognized variable declaration: baseIndex
+PARSER: Printing symbol table
+Symbol Table:
+Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+PARSER: Checking if variable has already been declared
+Name with suffix: baseIndex_var
+newSymbol->name: baseIndex_var
+Symbol Table:
+Name: baseIndex_var, Type: VarType_Int, Scope Level: 0
+Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+PARSER: Recognized variable declaration: outputInt
+PARSER: Printing symbol table
+Symbol Table:
+Name: baseIndex_var, Type: VarType_Int, Scope Level: 0
+Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+PARSER: Checking if variable has already been declared
+Name with suffix: outputInt_var
+newSymbol->name: outputInt_var
+Symbol Table:
+Name: baseIndex_var, Type: VarType_Int, Scope Level: 0
+Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: outputInt_var, Type: VarType_Int, Scope Level: 0
+PARSER: Recognized variable declaration: outputFloat
+PARSER: Printing symbol table
+Symbol Table:
+Name: baseIndex_var, Type: VarType_Int, Scope Level: 0
+Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: outputInt_var, Type: VarType_Int, Scope Level: 0
+PARSER: Checking if variable has already been declared
+Name with suffix: outputFloat_var
+newSymbol->name: outputFloat_var
+Symbol Table:
+Name: outputFloat_var, Type: VarType_Float, Scope Level: 0
+Name: baseIndex_var, Type: VarType_Int, Scope Level: 0
+Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: outputInt_var, Type: VarType_Int, Scope Level: 0
+PARSER: Recognized variable declaration list
+PARSER: Recognized variable declaration list
+PARSER: Recognized variable declaration list
+PARSER: Recognized variable declaration list
+PARSER: Recognized variable declaration list
+PARSER: Recognized int number
+PARSER: Recognized assignment statement
+ASSIGNMENT statement 
+PARSER: Recognized int number
+PARSER: Recognized assignment statement
+PARSER: Recognized int number
+PARSER: Recognized int number
+PARSER: Recognized expression
+PARSER: Recognized int number
+PARSER: Recognized assignment statement
+PARSER: Recognized int number
+PARSER: Recognized int number
+PARSER: Recognized expression
+PARSER: Recognized int number
+PARSER: Recognized assignment statement
+PARSER: Recognized int number
+PARSER: Recognized int number
+PARSER: Recognized expression
+PARSER: Recognized int number
+PARSER: Recognized assignment statement
+PARSER: Recognized int number
+PARSER: Recognized int number
+PARSER: Recognized expression
+PARSER: Recognized int number
+PARSER: Recognized assignment statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+ASSIGNMENT statement 
+PARSER: Recognized float number
+PARSER: Recognized assignment statement
+ASSIGNMENT statement 
+PARSER: Recognized int number
+PARSER: Recognized expression
+PARSER: Recognized float number
+PARSER: Recognized assignment statement
+ASSIGNMENT statement 
+PARSER: Recognized int number
+PARSER: Recognized expression
+PARSER: Recognized float number
+PARSER: Recognized assignment statement
+ASSIGNMENT statement 
+PARSER: Recognized int number
+PARSER: Recognized expression
+PARSER: Recognized float number
+PARSER: Recognized assignment statement
+ASSIGNMENT statement 
+PARSER: Recognized int number
+PARSER: Recognized expression
+PARSER: Recognized float number
+PARSER: Recognized assignment statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized int number
+ARRAY ACCESS statement 
+PARSER: Recognized assignment statement
+PARSER: Recognized write statement
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+PARSER: Recognized statement list
+The PARSER has started
+Parsing successful!
+Program
+├── VarDeclList
+|   ├── ArrDecl: array int intArray_var[5]
+|   └── VarDeclList
+|       ├── ArrDecl: array int floatArray_var[5]
+|       └── VarDeclList
+|           ├── VarDecl: int baseIndex_var
+|           └── VarDeclList
+|               ├── VarDecl: int outputInt_var
+|               └── VarDeclList
+|                   ├── VarDecl: float outputFloat_var
+|                   └── VarDeclList
+└── StmtList
+    ├── AssignStmt: baseIndex_var =
+    |   └── IntExpr: 0
+    └── StmtList
+        ├── AssignArrStmt: intArray_var[] =
+        |   ├── SimpleID: baseIndex_var
+        |   └── IntExpr: 32
+        └── StmtList
+            ├── AssignArrStmt: intArray_var[] =
+            |   ├── Expr: -
+            |   |   ├── IntExpr: 3
+            |   |   └── IntExpr: 2
+            |   └── IntExpr: 67
+            └── StmtList
+                ├── AssignArrStmt: intArray_var[] =
+                |   ├── Expr: +
+                |   |   ├── IntExpr: 1
+                |   |   └── IntExpr: 1
+                |   └── IntExpr: 45
+                └── StmtList
+                    ├── AssignArrStmt: intArray_var[] =
+                    |   ├── Expr: /
+                    |   |   ├── IntExpr: 9
+                    |   |   └── IntExpr: 3
+                    |   └── IntExpr: 98
+                    └── StmtList
+                        ├── AssignArrStmt: intArray_var[] =
+                        |   ├── Expr: *
+                        |   |   ├── IntExpr: 2
+                        |   |   └── IntExpr: 2
+                        |   └── IntExpr: 21
+                        └── StmtList
+                            ├── AssignStmt: outputInt_var =
+                            |   └── ArrAccess: intArray_var
+                            |       └── IntExpr: 0
+                            └── StmtList
+                                ├── WriteStmt: outputInt_var
+                                └── StmtList
+                                    ├── AssignStmt: outputInt_var =
+                                    |   └── ArrAccess: intArray_var
+                                    |       └── IntExpr: 1
+                                    └── StmtList
+                                        ├── WriteStmt: outputInt_var
+                                        └── StmtList
+                                            ├── AssignStmt: outputInt_var =
+                                            |   └── ArrAccess: intArray_var
+                                            |       └── IntExpr: 2
+                                            └── StmtList
+                                                ├── WriteStmt: outputInt_var
+                                                └── StmtList
+                                                    ├── AssignStmt: outputInt_var =
+                                                    |   └── ArrAccess: intArray_var
+                                                    |       └── IntExpr: 3
+                                                    └── StmtList
+                                                        ├── WriteStmt: outputInt_var
+                                                        └── StmtList
+                                                            ├── AssignStmt: outputInt_var =
+                                                            |   └── ArrAccess: intArray_var
+                                                            |       └── IntExpr: 4
+                                                            └── StmtList
+                                                                ├── WriteStmt: outputInt_var
+                                                                └── StmtList
+                                                                    ├── AssignArrStmt: floatArray_var[] =
+                                                                    |   ├── SimpleID: baseIndex_var
+                                                                    |   └── FloatExpr: 3.200000
+                                                                    └── StmtList
+                                                                        ├── AssignArrStmt: floatArray_var[] =
+                                                                        |   ├── Expr: +
+                                                                        |   |   ├── SimpleID: baseIndex_var
+                                                                        |   |   └── IntExpr: 1
+                                                                        |   └── FloatExpr: 6.700000
+                                                                        └── StmtList
+                                                                            ├── AssignArrStmt: floatArray_var[] =
+                                                                            |   ├── Expr: +
+                                                                            |   |   ├── SimpleID: baseIndex_var
+                                                                            |   |   └── IntExpr: 2
+                                                                            |   └── FloatExpr: 4.500000
+                                                                            └── StmtList
+                                                                                ├── AssignArrStmt: floatArray_var[] =
+                                                                                |   ├── Expr: +
+                                                                                |   |   ├── SimpleID: baseIndex_var
+                                                                                |   |   └── IntExpr: 3
+                                                                                |   └── FloatExpr: 9.800000
+                                                                                └── StmtList
+                                                                                    ├── AssignArrStmt: floatArray_var[] =
+                                                                                    |   ├── Expr: +
+                                                                                    |   |   ├── SimpleID: baseIndex_var
+                                                                                    |   |   └── IntExpr: 4
+                                                                                    |   └── FloatExpr: 2.100000
+                                                                                    └── StmtList
+                                                                                        ├── AssignStmt: outputFloat_var =
+                                                                                        |   └── ArrAccess: floatArray_var
+                                                                                        |       └── IntExpr: 0
+                                                                                        └── StmtList
+                                                                                            ├── WriteStmt: outputFloat_var
+                                                                                            └── StmtList
+                                                                                                ├── AssignStmt: outputFloat_var =
+                                                                                                |   └── ArrAccess: floatArray_var
+                                                                                                |       └── IntExpr: 1
+                                                                                                └── StmtList
+                                                                                                    ├── WriteStmt: outputFloat_var
+                                                                                                    └── StmtList
+                                                                                                        ├── AssignStmt: outputFloat_var =
+                                                                                                        |   └── ArrAccess: floatArray_var
+                                                                                                        |       └── IntExpr: 2
+                                                                                                        └── StmtList
+                                                                                                            ├── WriteStmt: outputFloat_var
+                                                                                                            └── StmtList
+                                                                                                                ├── AssignStmt: outputFloat_var =
+                                                                                                                |   └── ArrAccess: floatArray_var
+                                                                                                                |       └── IntExpr: 3
+                                                                                                                └── StmtList
+                                                                                                                    ├── WriteStmt: outputFloat_var
+                                                                                                                    └── StmtList
+                                                                                                                        ├── AssignStmt: outputFloat_var =
+                                                                                                                        |   └── ArrAccess: floatArray_var
+                                                                                                                        |       └── IntExpr: 4
+                                                                                                                        └── StmtList
+                                                                                                                            ├── WriteStmt: outputFloat_var
+                                                                                                                            └── StmtList - END
+Symbol Table:
+Name: outputFloat_var, Type: VarType_Float, Scope Level: 0
+Name: baseIndex_var, Type: VarType_Int, Scope Level: 0
+Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
+Name: outputInt_var, Type: VarType_Int, Scope Level: 0
+
+=== SEMANTIC ANALYSIS ===
+
+Performing semantic analysis on program
+SEMANTIC: Recognized NodeType_Program
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_ArrDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_ArrDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_VarDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_VarDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_VarDecl
+SEMANTIC: Recognized NodeType_VarDeclList
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i0
+    ===END OF OPERAND STACK===
+i0 = 0 assign.int (null)
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i1
+    ===END OF OPERAND STACK===
+i1 = baseIndex_var load.int (null)
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i1
+     - i2
+    ===END OF OPERAND STACK===
+i2 = 32 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_BinOp
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i3
+    ===END OF OPERAND STACK===
+i3 = 3 assign.int (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i3
+     - i4
+    ===END OF OPERAND STACK===
+i4 = 2 assign.int (null)
+SEMANTIC: Exiting NodeType_BinOp case
+Generating TAC for binary expression
+arg1Operand->operandID: i3
+    ===OPERAND STACK===
+     - i5
+    ===END OF OPERAND STACK===
+i5 = i3 -.int i4
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i5
+     - i6
+    ===END OF OPERAND STACK===
+i6 = 67 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_BinOp
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i7
+    ===END OF OPERAND STACK===
+i7 = 1 assign.int (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i7
+     - i8
+    ===END OF OPERAND STACK===
+i8 = 1 assign.int (null)
+SEMANTIC: Exiting NodeType_BinOp case
+Generating TAC for binary expression
+arg1Operand->operandID: i7
+    ===OPERAND STACK===
+     - i9
+    ===END OF OPERAND STACK===
+i9 = i7 +.int i8
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i9
+     - i10
+    ===END OF OPERAND STACK===
+i10 = 45 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_BinOp
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i11
+    ===END OF OPERAND STACK===
+i11 = 9 assign.int (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i11
+     - i12
+    ===END OF OPERAND STACK===
+i12 = 3 assign.int (null)
+SEMANTIC: Exiting NodeType_BinOp case
+Generating TAC for binary expression
+arg1Operand->operandID: i11
+    ===OPERAND STACK===
+     - i13
+    ===END OF OPERAND STACK===
+i13 = i11 /.int i12
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i13
+     - i14
+    ===END OF OPERAND STACK===
+i14 = 98 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_BinOp
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i15
+    ===END OF OPERAND STACK===
+i15 = 2 assign.int (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i15
+     - i16
+    ===END OF OPERAND STACK===
+i16 = 2 assign.int (null)
+SEMANTIC: Exiting NodeType_BinOp case
+Generating TAC for binary expression
+arg1Operand->operandID: i15
+    ===OPERAND STACK===
+     - i17
+    ===END OF OPERAND STACK===
+i17 = i15 *.int i16
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i17
+     - i18
+    ===END OF OPERAND STACK===
+i18 = 21 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i19
+    ===END OF OPERAND STACK===
+i19 = 0 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i20
+    ===END OF OPERAND STACK===
+i20 = intArray_var load.intIndex i19
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+i21 = outputInt_var load.int (null)
+(null) = i21 write.int (null)
+(null) = i21 write.int (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i22
+    ===END OF OPERAND STACK===
+i22 = 1 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i23
+    ===END OF OPERAND STACK===
+i23 = intArray_var load.intIndex i22
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+i24 = outputInt_var load.int (null)
+(null) = i24 write.int (null)
+(null) = i24 write.int (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i25
+    ===END OF OPERAND STACK===
+i25 = 2 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i26
+    ===END OF OPERAND STACK===
+i26 = intArray_var load.intIndex i25
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+i27 = outputInt_var load.int (null)
+(null) = i27 write.int (null)
+(null) = i27 write.int (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i28
+    ===END OF OPERAND STACK===
+i28 = 3 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i29
+    ===END OF OPERAND STACK===
+i29 = intArray_var load.intIndex i28
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+i30 = outputInt_var load.int (null)
+(null) = i30 write.int (null)
+(null) = i30 write.int (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i31
+    ===END OF OPERAND STACK===
+i31 = 4 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i32
+    ===END OF OPERAND STACK===
+i32 = intArray_var load.intIndex i31
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+i33 = outputInt_var load.int (null)
+(null) = i33 write.int (null)
+(null) = i33 write.int (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i34
+    ===END OF OPERAND STACK===
+i34 = baseIndex_var load.int (null)
+SEMANTIC: Recognized NodeType_FloatExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i34
+     - f0
+    ===END OF OPERAND STACK===
+f0 = 3.200000 assign.float (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_BinOp
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i35
+    ===END OF OPERAND STACK===
+i35 = baseIndex_var load.int (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i35
+     - i36
+    ===END OF OPERAND STACK===
+i36 = 1 assign.int (null)
+SEMANTIC: Exiting NodeType_BinOp case
+Generating TAC for binary expression
+arg1Operand->operandID: i35
+    ===OPERAND STACK===
+     - i37
+    ===END OF OPERAND STACK===
+i37 = i35 +.int i36
+SEMANTIC: Recognized NodeType_FloatExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i37
+     - f1
+    ===END OF OPERAND STACK===
+f1 = 6.700000 assign.float (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_BinOp
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i38
+    ===END OF OPERAND STACK===
+i38 = baseIndex_var load.int (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i38
+     - i39
+    ===END OF OPERAND STACK===
+i39 = 2 assign.int (null)
+SEMANTIC: Exiting NodeType_BinOp case
+Generating TAC for binary expression
+arg1Operand->operandID: i38
+    ===OPERAND STACK===
+     - i40
+    ===END OF OPERAND STACK===
+i40 = i38 +.int i39
+SEMANTIC: Recognized NodeType_FloatExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i40
+     - f2
+    ===END OF OPERAND STACK===
+f2 = 4.500000 assign.float (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_BinOp
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i41
+    ===END OF OPERAND STACK===
+i41 = baseIndex_var load.int (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i41
+     - i42
+    ===END OF OPERAND STACK===
+i42 = 3 assign.int (null)
+SEMANTIC: Exiting NodeType_BinOp case
+Generating TAC for binary expression
+arg1Operand->operandID: i41
+    ===OPERAND STACK===
+     - i43
+    ===END OF OPERAND STACK===
+i43 = i41 +.int i42
+SEMANTIC: Recognized NodeType_FloatExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i43
+     - f3
+    ===END OF OPERAND STACK===
+f3 = 9.800000 assign.float (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignArrStmt
+SEMANTIC: Recognized NodeType_BinOp
+SEMANTIC: Entering left...
+SEMANTIC: Recognized NodeType_SimpleID
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i44
+    ===END OF OPERAND STACK===
+i44 = baseIndex_var load.int (null)
+SEMANTIC: Entering right...
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i44
+     - i45
+    ===END OF OPERAND STACK===
+i45 = 4 assign.int (null)
+SEMANTIC: Exiting NodeType_BinOp case
+Generating TAC for binary expression
+arg1Operand->operandID: i44
+    ===OPERAND STACK===
+     - i46
+    ===END OF OPERAND STACK===
+i46 = i44 +.int i45
+SEMANTIC: Recognized NodeType_FloatExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i46
+     - f4
+    ===END OF OPERAND STACK===
+f4 = 2.100000 assign.float (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for array index assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i47
+    ===END OF OPERAND STACK===
+i47 = 0 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i48
+    ===END OF OPERAND STACK===
+i48 = floatArray_var load.intIndex i47
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+f5 = outputFloat_var load.float (null)
+(null) = f5 write.float (null)
+(null) = f5 write.float (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i49
+    ===END OF OPERAND STACK===
+i49 = 1 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i50
+    ===END OF OPERAND STACK===
+i50 = floatArray_var load.intIndex i49
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+f6 = outputFloat_var load.float (null)
+(null) = f6 write.float (null)
+(null) = f6 write.float (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i51
+    ===END OF OPERAND STACK===
+i51 = 2 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i52
+    ===END OF OPERAND STACK===
+i52 = floatArray_var load.intIndex i51
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+f7 = outputFloat_var load.float (null)
+(null) = f7 write.float (null)
+(null) = f7 write.float (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i53
+    ===END OF OPERAND STACK===
+i53 = 3 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i54
+    ===END OF OPERAND STACK===
+i54 = floatArray_var load.intIndex i53
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+f8 = outputFloat_var load.float (null)
+(null) = f8 write.float (null)
+(null) = f8 write.float (null)
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_AssignStmt
+SEMANTIC: Recognized NodeType_ArrAccess
+SEMANTIC: Recognized NodeType_IntExpr
+Generating TAC for simple int expression
+    ===OPERAND STACK===
+     - i55
+    ===END OF OPERAND STACK===
+i55 = 4 assign.int (null)
+SEMANTIC: Array index successfully identified as an integer
+Generating TAC for simple ID
+    ===OPERAND STACK===
+     - i56
+    ===END OF OPERAND STACK===
+i56 = floatArray_var load.intIndex i55
+Generating TAC for variable assignment
+SEMANTIC: Recognized NodeType_StmtList
+SEMANTIC: Recognized NodeType_WriteStmt
+Generating TAC for write statement
+f9 = outputFloat_var load.float (null)
+(null) = f9 write.float (null)
+(null) = f9 write.float (null)
+SEMANTIC: Recognized NodeType_StmtList
+
+=== TAC GENERATION ===
+TAC written to output/TAC.ir
+
+=== CODE OPTIMIZATION ===
+
+=== CODE GENERATION ===
+	li $t0, 0 #ASSIGN [i0 = 0 assign.int (null)]
+	sw $t0, i0
+	lw $t0, i0 #STORE [baseIndex_var = i0 store.int (null)]
+	sw $t0, baseIndex_var
+	lw $t0, baseIndex_var #LOAD [i1 = baseIndex_var load.int (null)]
+	sw $t0, i1
+	li $t0, 32 #ASSIGN [i2 = 32 assign.int (null)]
+	sw $t0, i2
+	li $t0, 3 #ASSIGN [i3 = 3 assign.int (null)]
+	sw $t0, i3
+	li $t0, 2 #ASSIGN [i4 = 2 assign.int (null)]
+	sw $t0, i4
+	lw $t0, i3 #SUB [i5 = i3 -.int i4]
+	lw $t1, i4
+	sub $t0, $t0, $t1
+	sw $t0, i5
+	li $t0, 67 #ASSIGN [i6 = 67 assign.int (null)]
+	sw $t0, i6
+	li $t0, 1 #ASSIGN [i7 = 1 assign.int (null)]
+	sw $t0, i7
+	li $t0, 1 #ASSIGN [i8 = 1 assign.int (null)]
+	sw $t0, i8
+	lw $t0, i7 #ADD [i9 = i7 +.int i8]
+	lw $t1, i8
+	add $t0, $t0, $t1
+	sw $t0, i9
+	li $t0, 45 #ASSIGN [i10 = 45 assign.int (null)]
+	sw $t0, i10
+	li $t0, 9 #ASSIGN [i11 = 9 assign.int (null)]
+	sw $t0, i11
+	li $t0, 3 #ASSIGN [i12 = 3 assign.int (null)]
+	sw $t0, i12
+	lw $t0, i11 #MUL [i13 = i11 /.int i12]
+	lw $t1, i12
+	div $t0, $t1
+	mflo $t0
+	sw $t0, i13
+	li $t0, 98 #ASSIGN [i14 = 98 assign.int (null)]
+	sw $t0, i14
+	li $t0, 2 #ASSIGN [i15 = 2 assign.int (null)]
+	sw $t0, i15
+	li $t0, 2 #ASSIGN [i16 = 2 assign.int (null)]
+	sw $t0, i16
+	lw $t0, i15 #MUL [i17 = i15 *.int i16]
+	lw $t1, i16
+	mult $t0, $t0, $t1
+	sw $t0, i17
+	li $t0, 21 #ASSIGN [i18 = 21 assign.int (null)]
+	sw $t0, i18
+	li $t0, 0 #ASSIGN [i19 = 0 assign.int (null)]
+	sw $t0, i19
+	lw $t0, i20 #STORE [outputInt_var = i20 store.int (null)]
+	sw $t0, outputInt_var
+	lw $t0, outputInt_var #LOAD [i21 = outputInt_var load.int (null)]
+	sw $t0, i21
+	lw $a0, i21 #WRITE [(null) = i21 write.int (null)]
+	li $v0, 1
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	li $t0, 1 #ASSIGN [i22 = 1 assign.int (null)]
+	sw $t0, i22
+	lw $t0, i23 #STORE [outputInt_var = i23 store.int (null)]
+	sw $t0, outputInt_var
+	lw $t0, outputInt_var #LOAD [i24 = outputInt_var load.int (null)]
+	sw $t0, i24
+	lw $a0, i24 #WRITE [(null) = i24 write.int (null)]
+	li $v0, 1
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	li $t0, 2 #ASSIGN [i25 = 2 assign.int (null)]
+	sw $t0, i25
+	lw $t0, i26 #STORE [outputInt_var = i26 store.int (null)]
+	sw $t0, outputInt_var
+	lw $t0, outputInt_var #LOAD [i27 = outputInt_var load.int (null)]
+	sw $t0, i27
+	lw $a0, i27 #WRITE [(null) = i27 write.int (null)]
+	li $v0, 1
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	li $t0, 3 #ASSIGN [i28 = 3 assign.int (null)]
+	sw $t0, i28
+	lw $t0, i29 #STORE [outputInt_var = i29 store.int (null)]
+	sw $t0, outputInt_var
+	lw $t0, outputInt_var #LOAD [i30 = outputInt_var load.int (null)]
+	sw $t0, i30
+	lw $a0, i30 #WRITE [(null) = i30 write.int (null)]
+	li $v0, 1
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	li $t0, 4 #ASSIGN [i31 = 4 assign.int (null)]
+	sw $t0, i31
+	lw $t0, i32 #STORE [outputInt_var = i32 store.int (null)]
+	sw $t0, outputInt_var
+	lw $t0, outputInt_var #LOAD [i33 = outputInt_var load.int (null)]
+	sw $t0, i33
+	lw $a0, i33 #WRITE [(null) = i33 write.int (null)]
+	li $v0, 1
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	lw $t0, baseIndex_var #LOAD [i34 = baseIndex_var load.int (null)]
+	sw $t0, i34
+	lwc1 $f0, float_const_0 #ASSIGN [f0 = 3.200000 assign.float (null)]
+	s.s $f0, f0
+	lw $t0, baseIndex_var #LOAD [i35 = baseIndex_var load.int (null)]
+	sw $t0, i35
+	li $t0, 1 #ASSIGN [i36 = 1 assign.int (null)]
+	sw $t0, i36
+	lw $t0, i35 #ADD [i37 = i35 +.int i36]
+	lw $t1, i36
+	add $t0, $t0, $t1
+	sw $t0, i37
+	lwc1 $f0, float_const_1 #ASSIGN [f1 = 6.700000 assign.float (null)]
+	s.s $f0, f1
+	lw $t0, baseIndex_var #LOAD [i38 = baseIndex_var load.int (null)]
+	sw $t0, i38
+	li $t0, 2 #ASSIGN [i39 = 2 assign.int (null)]
+	sw $t0, i39
+	lw $t0, i38 #ADD [i40 = i38 +.int i39]
+	lw $t1, i39
+	add $t0, $t0, $t1
+	sw $t0, i40
+	lwc1 $f0, float_const_2 #ASSIGN [f2 = 4.500000 assign.float (null)]
+	s.s $f0, f2
+	lw $t0, baseIndex_var #LOAD [i41 = baseIndex_var load.int (null)]
+	sw $t0, i41
+	li $t0, 3 #ASSIGN [i42 = 3 assign.int (null)]
+	sw $t0, i42
+	lw $t0, i41 #ADD [i43 = i41 +.int i42]
+	lw $t1, i42
+	add $t0, $t0, $t1
+	sw $t0, i43
+	lwc1 $f0, float_const_3 #ASSIGN [f3 = 9.800000 assign.float (null)]
+	s.s $f0, f3
+	lw $t0, baseIndex_var #LOAD [i44 = baseIndex_var load.int (null)]
+	sw $t0, i44
+	li $t0, 4 #ASSIGN [i45 = 4 assign.int (null)]
+	sw $t0, i45
+	lw $t0, i44 #ADD [i46 = i44 +.int i45]
+	lw $t1, i45
+	add $t0, $t0, $t1
+	sw $t0, i46
+	lwc1 $f0, float_const_4 #ASSIGN [f4 = 2.100000 assign.float (null)]
+	s.s $f0, f4
+	li $t0, 0 #ASSIGN [i47 = 0 assign.int (null)]
+	sw $t0, i47
+	l.s $f0, i48 #STORE [outputFloat_var = i48 store.float (null)]
+	s.s $f0, outputFloat_var
+	l.s $f0, outputFloat_var #LOAD [f5 = outputFloat_var load.float (null)]
+	s.s $f0, f5
+	l.s $f12, f5 #WRITE [(null) = f5 write.float (null)]
+	li $v0, 2
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	li $t0, 1 #ASSIGN [i49 = 1 assign.int (null)]
+	sw $t0, i49
+	l.s $f0, i50 #STORE [outputFloat_var = i50 store.float (null)]
+	s.s $f0, outputFloat_var
+	l.s $f0, outputFloat_var #LOAD [f6 = outputFloat_var load.float (null)]
+	s.s $f0, f6
+	l.s $f12, f6 #WRITE [(null) = f6 write.float (null)]
+	li $v0, 2
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	li $t0, 2 #ASSIGN [i51 = 2 assign.int (null)]
+	sw $t0, i51
+	l.s $f0, i52 #STORE [outputFloat_var = i52 store.float (null)]
+	s.s $f0, outputFloat_var
+	l.s $f0, outputFloat_var #LOAD [f7 = outputFloat_var load.float (null)]
+	s.s $f0, f7
+	l.s $f12, f7 #WRITE [(null) = f7 write.float (null)]
+	li $v0, 2
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	li $t0, 3 #ASSIGN [i53 = 3 assign.int (null)]
+	sw $t0, i53
+	l.s $f0, i54 #STORE [outputFloat_var = i54 store.float (null)]
+	s.s $f0, outputFloat_var
+	l.s $f0, outputFloat_var #LOAD [f8 = outputFloat_var load.float (null)]
+	s.s $f0, f8
+	l.s $f12, f8 #WRITE [(null) = f8 write.float (null)]
+	li $v0, 2
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+	li $t0, 4 #ASSIGN [i55 = 4 assign.int (null)]
+	sw $t0, i55
+	l.s $f0, i56 #STORE [outputFloat_var = i56 store.float (null)]
+	s.s $f0, outputFloat_var
+	l.s $f0, outputFloat_var #LOAD [f9 = outputFloat_var load.float (null)]
+	s.s $f0, f9
+	l.s $f12, f9 #WRITE [(null) = f9 write.float (null)]
+	li $v0, 2
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+MIPS code generated and saved to file output/output.asm
