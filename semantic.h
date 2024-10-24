@@ -34,7 +34,8 @@ void initSemantic(SymbolTable* symbolTable); //Initialize
 void semanticAnalysis(ASTNode* node);  // Semantic analysis function
 TAC* generateTACForBinOp(ASTNode* expr);  // TAC generation for expressions
 TAC* generateTACForWrite(ASTNode* writeStmt); // TAC generation for write statement
-TAC* generateTACForAssign(ASTNode* assignStmt); // TAC generation for write statement
+TAC* generateTACForAssign(ASTNode* assignStmt); // TAC generation for assign statement
+TAC* generateTACForAssignArr(ASTNode* arrAssignStmt); // TAC generation for assign (array index) statement
 char* createTempVar(VarType type);   // Create temporary variables for TAC
 // char* createTempVar();   // Create temporary variables for TAC
 char* createOperand(ASTNode* node);   // Create operand strings for TAC
@@ -50,6 +51,9 @@ TAC* createTAC(char* result, char* arg1, char* op, char* arg2); //Create a TAC m
 void removeTAC(TAC** del); //Remove TAC from list and discard; close the resulting gap in list by linking neighbors
 void freeTAC(TAC** del); //Frees the memory in a TAC
 void replaceTAC(TAC** oldTAC, TAC** newTAC); //Remove a TAC from list, and insert another TAC in its place; link with neighbors
+
+//Get the type of an Expr. Used in type-checking
+VarType getExprType(ASTNode* expr);
 
 #endif // SEMANTIC_H
 

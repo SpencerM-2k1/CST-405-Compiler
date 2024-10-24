@@ -13,21 +13,28 @@ bool errorFound = false;
 
 %%
 
-"int"               { yylval.sval = strdup(yytext); return TYPE; }
-"float"             { yylval.sval = strdup(yytext); return TYPE; }
-"write"             { return WRITE; }
-[a-zA-Z_][a-zA-Z0-9_]* { yylval.sval = strdup(yytext); return ID; }
-[0-9]+              { yylval.intVal = atoi(strdup(yytext)); return INT_NUMBER; } //atoi: conversion to int
-[0-9]+\.[0-9]+      { yylval.floatVal = atof(yytext); return FLOAT_NUMBER; }
-"+"                 { yylval.sval = strdup(yytext); return PLUS; }
-"-"                 { yylval.sval = strdup(yytext); return MINUS; }
-"*"                 { yylval.sval = strdup(yytext); return MULTIPLY; }
-"/"                 { yylval.sval = strdup(yytext); return MULTIPLY; }
-"="                 { yylval.sval = strdup(yytext); return ASSIGN; }
-";"                 { return SEMI; }
+"int"               { yylval.sval = strdup(yytext); chars += strlen(yytext); return TYPE; }
+"float"             { yylval.sval = strdup(yytext); chars += strlen(yytext); return TYPE; }
+"array"             { chars += strlen(yytext); return ARRAY; }
+"write"             { chars += strlen(yytext); return WRITE; }
+
+[a-zA-Z_][a-zA-Z0-9_]* { yylval.sval = strdup(yytext); chars += strlen(yytext); return ID; }
+[0-9]+              { yylval.intVal = atoi(strdup(yytext)); chars += strlen(yytext); return INT_NUMBER; } //atoi: conversion to int
+[0-9]+\.[0-9]+      { yylval.floatVal = atof(yytext); chars += strlen(yytext); return FLOAT_NUMBER; }
+
+"+"                 { yylval.sval = strdup(yytext); chars += strlen(yytext); return PLUS; }
+"-"                 { yylval.sval = strdup(yytext); chars += strlen(yytext); return MINUS; }
+"*"                 { yylval.sval = strdup(yytext); chars += strlen(yytext); return MULTIPLY; }
+"/"                 { yylval.sval = strdup(yytext); chars += strlen(yytext); return DIVIDE; }
+"="                 { yylval.sval = strdup(yytext); chars += strlen(yytext); return ASSIGN; }
+";"                 { chars += strlen(yytext); return SEMI; }
+
+"["                 { chars += strlen(yytext); return LBRACKET; }
+"]"                 { chars += strlen(yytext); return RBRACKET; }
+
 [ \t\r]+            { /* Skip whitespace */ }
-[\n]                { lines++; }
-.                   { printf("Unrecognized symbol '%s' at line %d\n", yytext, lines); errorFound = true; }
+[\n]                { lines++; chars = 0; }
+.                   { printf("Unrecognized symbol '%s' at line %d:%d\n", yytext, lines, chars); errorFound = true; }
 
 %%
 

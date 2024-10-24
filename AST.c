@@ -5,16 +5,16 @@
 #include "AST.h"
 
 //Used for debug
-char* NodeTypeNames[10] = {"NodeType_Program",
-    "NodeType_VarDeclList", 
-    "NodeType_VarDecl", 
-    "NodeType_IntExpr",
-    "NodeType_SimpleID",
-    "NodeType_BinOp", 
-    "NodeType_StmtList",
-    "NodeType_AssignStmt",
-    "NodeType_BinOp", 
-    "NodeType_WriteStmt"};
+// char* NodeTypeNames[10] = {"NodeType_Program",
+//     "NodeType_VarDeclList", 
+//     "NodeType_VarDecl", 
+//     "NodeType_IntExpr",
+//     "NodeType_SimpleID",
+//     "NodeType_BinOp", 
+//     "NodeType_StmtList",
+//     "NodeType_AssignStmt",
+//     "NodeType_BinOp", 
+//     "NodeType_WriteStmt"};
 
 // Function to print indentation and branch lines
 void printIndent(bool* drawVertical, int level) {
@@ -81,6 +81,10 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
             printf("VarDecl: %s %s\n", node->data.varDecl.varType, node->data.varDecl.varName);
             break;
 
+        case NodeType_ArrDecl:
+            printf("ArrDecl: array %s %s[%d]\n", node->data.arrDecl.varType, node->data.arrDecl.varName, node->data.arrDecl.arrSize);
+            break;
+
         case NodeType_IntExpr:
             printf("IntExpr: %d\n", node->data.intExpr.number);
             break;
@@ -93,8 +97,12 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
             printf("SimpleID: %s\n", node->data.simpleID.name);
             break;
 
+        case NodeType_ArrAccess:
+            printf("ArrAccess: %s\n", node->data.arrAccess.name);
+            traverseAST(node->data.arrAccess.indexExpr, level + 1, drawVertical, true);
+            break;
+
         case NodeType_BinOp:
-            // printf("Expr: %c\n", node->data.binOp.operator);
             printf("Expr: %s\n", node->data.binOp.operator);
             drawVertical[level - 1] = !isLast;
             traverseAST(node->data.binOp.left, level + 1, drawVertical, false);
@@ -133,12 +141,17 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
             traverseAST(node->data.assignStmt.expr, level + 1, drawVertical, true);
             break;
 
-        // case NodeType_BinOp:
-        //     printf("BinOp: %c\n", node->data.binOp.operator);
-        //     drawVertical[level - 1] = !isLast;
-        //     traverseAST(node->data.binOp.left, level + 1, drawVertical, false);
-        //     traverseAST(node->data.binOp.right, level + 1, drawVertical, true);
-        //     break;
+        case NodeType_AssignArrStmt:
+            printf("AssignArrStmt: %s[] %s\n", node->data.assignArrStmt.varName, node->data.assignArrStmt.operator);
+
+            // drawVertical[level - 1] = !isLast;
+
+            // numChildren = 2;
+            // childIndex = 0;
+            drawVertical[level - 1] = !isLast;
+            traverseAST(node->data.assignArrStmt.indexExpr, level + 1, drawVertical, false);
+            traverseAST(node->data.assignArrStmt.expr, level + 1, drawVertical, true);
+            break;
 
         case NodeType_WriteStmt:
             printf("WriteStmt: %s\n", node->data.writeStmt.varName);
@@ -236,16 +249,29 @@ ASTNode* createNode(NodeType type) {
             newNode->data.varDecl.varName = NULL;
             break;
 
+        case NodeType_ArrDecl:
+            newNode->data.arrDecl.arrSize = 0;
+            newNode->data.arrDecl.varName = NULL;
+            newNode->data.arrDecl.varType = NULL;
+            break;
+
         case NodeType_IntExpr:
             newNode->data.intExpr.number = 0;
+            break;
+
+        case NodeType_FloatExpr:
+            newNode->data.floatExpr.number = 0.0;
             break;
 
         case NodeType_SimpleID:
             newNode->data.simpleID.name = NULL;
             break;
 
+        case NodeType_ArrAccess:
+            newNode->data.arrAccess.indexExpr = NULL;
+            newNode->data.arrAccess.name = NULL;
+
         case NodeType_BinOp:
-            // newNode->data.binOp.operator = '\0';
             newNode->data.binOp.operator = NULL;
             newNode->data.binOp.left = NULL;
             newNode->data.binOp.right = NULL;
@@ -262,11 +288,12 @@ ASTNode* createNode(NodeType type) {
             newNode->data.assignStmt.expr = NULL;
             break;
 
-        // case NodeType_BinOp:
-        //     newNode->data.binOp.operator = '\0';
-        //     newNode->data.binOp.left = NULL;
-        //     newNode->data.binOp.right = NULL;
-        //     break;
+        case NodeType_AssignArrStmt:
+            newNode->data.assignArrStmt.operator = NULL;
+            newNode->data.assignArrStmt.varName = NULL;
+            newNode->data.assignArrStmt.expr = NULL;
+            newNode->data.assignArrStmt.indexExpr = NULL;
+            break;
 
         case NodeType_WriteStmt:
             newNode->data.writeStmt.varName = NULL;

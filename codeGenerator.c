@@ -84,6 +84,14 @@ void generateMIPS(TAC* tacInstructions, const SymbolTable* table) {
             generateFloatStore(current);
         } else if (strcmp(current->op, "load.float") == 0) {
             generateFloatLoad(current);
+        } else if (strcmp(current->op, "store.intIndex") == 0) { //ARRAY INSTRUCTIONS
+            generateArrIntStore(current);
+        } else if (strcmp(current->op, "load.intIndex") == 0) {
+            generateArrIntLoad(current);
+        } else if (strcmp(current->op, "store.floatIndex") == 0) {
+            generateArrFloatStore(current);
+        } else if (strcmp(current->op, "load.floatIndex") == 0) {
+            generateArrFloatLoad(current);
         }
         // Add more cases for other operators (*, /) and conditional jumps if necessary
 
@@ -91,7 +99,8 @@ void generateMIPS(TAC* tacInstructions, const SymbolTable* table) {
     }
 
     // Exit the program
-    fprintf(outputFile, "\tli $v0, 10\n\tsyscall\n");
+    fprintf(outputFile, "\tli $v0, 10 #END\n");
+    fprintf(outputFile, "\tsyscall\n");
 
     // Append all declared memory addresses to the end of the file
     //      (Would do this as a header, but it overcomplicates float constant addresses)
@@ -631,6 +640,243 @@ void generateFloatLoad(TAC* current)
     deallocateFloatRegister(regIndex);
 }
 
+//ARRAY-SPECIFIC
+//      STORE IN INDEX
+void generateArrIntStore(TAC* current)
+{
+    //STORE (store temp var value in index of array)
+    //  la $t0, arrayName (load address)
+    //  lw $t1, indexVar (load word (int))
+    //  sll $t1, $t1, 2  (byte offset of 4-- bit shift twice to multiply index by 4)
+    //  add $t2, $t0, $t1 (add offset to arr address to get index address)
+    //  lw $t3, tempVar (load word from var)
+    //  sw $t3, 0($t2) (store word in arr index)
+
+
+    //  la $t0, arrayName (load address)
+    //  lw $t1, indexVar (load word (int))
+    //  sll $t1, $t1, 2  (byte offset of 4-- bit shift twice to multiply index by 4)
+    //  add $t2, $t0, $t1 (add offset to arr address to get index address)
+    //  lw $t3, 0($t2) (load word (int))
+    //  sw $t3, 0($t2) (store in result in)
+
+    //registers required: 3
+    int addressRegIndex, offsetRegIndex, resultRegIndex, addressSumRegIndex;
+
+    addressRegIndex = allocateIntRegister();
+    if (addressRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    offsetRegIndex = allocateIntRegister();
+    if (offsetRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    addressSumRegIndex = allocateIntRegister();
+    if (resultRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    resultRegIndex = allocateIntRegister();
+    if (resultRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+
+    fprintf(outputFile, "\tla %s, %s #STORE (int arr) [%s = %s %s %s]\n", tempIntRegisters[addressRegIndex].name, current->result, current->result, current->arg1, current->op, current->arg2);
+    fprintf(outputFile, "\tlw %s, %s\n", tempIntRegisters[offsetRegIndex].name, current->arg2);
+    fprintf(outputFile, "\tsll %s, %s, 2\n", tempIntRegisters[offsetRegIndex].name, tempIntRegisters[offsetRegIndex].name);
+    fprintf(outputFile, "\tadd %s, %s, %s\n", tempIntRegisters[addressSumRegIndex].name, tempIntRegisters[addressRegIndex].name, tempIntRegisters[offsetRegIndex].name);
+    fprintf(outputFile, "\tlw %s, %s\n", tempIntRegisters[resultRegIndex].name, current->arg1);
+    fprintf(outputFile, "\tsw %s, 0(%s)\n", tempIntRegisters[resultRegIndex].name, tempIntRegisters[addressSumRegIndex].name);
+    
+    //  lw $t0, tempVar (load word (int))
+    // printf("\tlw %s, %s #STORE [%s = %s %s %s]\n", tempIntRegisters[regIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    // fprintf(outputFile, "\tlw %s, %s #STORE [%s = %s %s %s]\n", tempIntRegisters[regIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    // //  sw $t0, var (load word (int))
+    // printf("\tsw %s, %s\n", tempIntRegisters[regIndex].name, current->result);
+    // fprintf(outputFile, "\tsw %s, %s\n", tempIntRegisters[regIndex].name, current->result);
+
+    deallocateIntRegister(addressRegIndex);
+    deallocateIntRegister(offsetRegIndex);
+    deallocateIntRegister(addressSumRegIndex);
+    deallocateIntRegister(resultRegIndex);
+}
+
+//      LOAD FROM INDEX
+void generateArrIntLoad(TAC* current)
+{
+    //LOAD (load value from index of array)
+    //  la $t0, arrayName (load address)
+    //  lw $t1, indexVar (load word containing index)
+    //  sll $t1, $t1, 2  (byte offset of 4-- bit shift twice to multiply index by 4)
+    //  add $t2, $t0, $t1 (add offset to arr address to get index address)
+    //  lw $t3, 0($t2) (load int in index)
+    //  sw $t3, resultVar (store in result destination)
+
+    //registers required: 4
+    int addressRegIndex, offsetRegIndex, resultRegIndex, addressSumRegIndex;
+
+    addressRegIndex = allocateIntRegister();
+    if (addressRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    offsetRegIndex = allocateIntRegister();
+    if (offsetRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    addressSumRegIndex = allocateIntRegister();
+    if (resultRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    resultRegIndex = allocateIntRegister();
+    if (resultRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+
+    fprintf(outputFile, "\tla %s, %s #LOAD (int arr) [%s = %s %s %s]\n", tempIntRegisters[addressRegIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    fprintf(outputFile, "\tlw %s, %s\n", tempIntRegisters[offsetRegIndex].name, current->arg2);
+    fprintf(outputFile, "\tsll %s, %s, 2\n", tempIntRegisters[offsetRegIndex].name, tempIntRegisters[offsetRegIndex].name);
+    fprintf(outputFile, "\tadd %s, %s, %s\n", tempIntRegisters[addressSumRegIndex].name, tempIntRegisters[addressRegIndex].name, tempIntRegisters[offsetRegIndex].name);
+    fprintf(outputFile, "\tlw %s, 0(%s)\n", tempIntRegisters[resultRegIndex].name, tempIntRegisters[addressSumRegIndex].name);
+    fprintf(outputFile, "\tsw %s, %s\n", tempIntRegisters[resultRegIndex].name, current->result);
+    
+    //  lw $t0, tempVar (load word (int))
+    // printf("\tlw %s, %s #STORE [%s = %s %s %s]\n", tempIntRegisters[regIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    // fprintf(outputFile, "\tlw %s, %s #STORE [%s = %s %s %s]\n", tempIntRegisters[regIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    // //  sw $t0, var (load word (int))
+    // printf("\tsw %s, %s\n", tempIntRegisters[regIndex].name, current->result);
+    // fprintf(outputFile, "\tsw %s, %s\n", tempIntRegisters[regIndex].name, current->result);
+
+    deallocateIntRegister(addressRegIndex);
+    deallocateIntRegister(offsetRegIndex);
+    deallocateIntRegister(addressSumRegIndex);
+    deallocateIntRegister(resultRegIndex);
+}
+
+//      STORE IN INDEX
+void generateArrFloatStore(TAC* current)
+{
+    //STORE (store temp var value in index of array)
+    //  la $t0, arrayName (load address)
+    //  lw $t1, indexVar (load word (int))
+    //  sll $t1, $t1, 2  (byte offset of 4-- bit shift twice to multiply index by 4)
+    //  add $t2, $t0, $t1 (add offset to arr address to get index address)
+    //  lw $t3, tempVar (load word from var)
+    //  sw $t3, 0($t2) (store word in arr index)
+
+
+    //  la $t0, arrayName (load address)
+    //  lw $t1, indexVar (load word (int))
+    //  sll $t1, $t1, 2  (byte offset of 4-- bit shift twice to multiply index by 4)
+    //  add $t2, $t0, $t1 (add offset to arr address to get index address)
+    //  lw $t3, 0($t2) (load word (int))
+    //  sw $t3, 0($t2) (store in result in)
+
+    //registers required: 3 int, 1 float
+    int addressRegIndex, offsetRegIndex, resultRegIndex, addressSumRegIndex;
+
+    addressRegIndex = allocateIntRegister();
+    if (addressRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    offsetRegIndex = allocateIntRegister();
+    if (offsetRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    addressSumRegIndex = allocateIntRegister();
+    if (resultRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    resultRegIndex = allocateFloatRegister();
+    if (resultRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+
+    fprintf(outputFile, "\tla %s, %s #STORE (int arr) [%s = %s %s %s]\n", tempIntRegisters[addressRegIndex].name, current->result, current->result, current->arg1, current->op, current->arg2);
+    fprintf(outputFile, "\tlw %s, %s\n", tempIntRegisters[offsetRegIndex].name, current->arg2);
+    fprintf(outputFile, "\tsll %s, %s, 2\n", tempIntRegisters[offsetRegIndex].name, tempIntRegisters[offsetRegIndex].name);
+    fprintf(outputFile, "\tadd %s, %s, %s\n", tempIntRegisters[addressSumRegIndex].name, tempIntRegisters[addressRegIndex].name, tempIntRegisters[offsetRegIndex].name);
+    fprintf(outputFile, "\tlw %s, %s\n", tempFloatRegisters[resultRegIndex].name, current->arg1);
+    fprintf(outputFile, "\tsw %s, 0(%s)\n", tempFloatRegisters[resultRegIndex].name, tempIntRegisters[addressSumRegIndex].name);
+    
+    //  lw $t0, tempVar (load word (int))
+    // printf("\tlw %s, %s #STORE [%s = %s %s %s]\n", tempIntRegisters[regIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    // fprintf(outputFile, "\tlw %s, %s #STORE [%s = %s %s %s]\n", tempIntRegisters[regIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    // //  sw $t0, var (load word (int))
+    // printf("\tsw %s, %s\n", tempIntRegisters[regIndex].name, current->result);
+    // fprintf(outputFile, "\tsw %s, %s\n", tempIntRegisters[regIndex].name, current->result);
+
+    deallocateIntRegister(addressRegIndex);
+    deallocateIntRegister(offsetRegIndex);
+    deallocateIntRegister(addressSumRegIndex);
+    deallocateFloatRegister(resultRegIndex);
+}
+
+//      LOAD FROM INDEX
+void generateArrFloatLoad(TAC* current)
+{
+    //LOAD (load value from index of array)
+    //  la $t0, arrayName (load address)
+    //  lw $t1, indexVar (load word containing index)
+    //  sll $t1, $t1, 2  (byte offset of 4-- bit shift twice to multiply index by 4)
+    //  add $t2, $t0, $t1 (add offset to arr address to get index address)
+    //  lw $t3, 0($t2) (load int in index)
+    //  sw $t3, resultVar (store in result destination)
+
+    //registers required: 4
+    int addressRegIndex, offsetRegIndex, resultRegIndex, addressSumRegIndex;
+
+    addressRegIndex = allocateIntRegister();
+    if (addressRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    offsetRegIndex = allocateIntRegister();
+    if (offsetRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    addressSumRegIndex = allocateIntRegister();
+    if (resultRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+    resultRegIndex = allocateFloatRegister();
+    if (resultRegIndex == -1) {
+        printf("Error: No available registers\n");
+        return;
+    }
+
+    fprintf(outputFile, "\tla %s, %s #LOAD (int arr) [%s = %s %s %s]\n", tempIntRegisters[addressRegIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    fprintf(outputFile, "\tlw %s, %s\n", tempIntRegisters[offsetRegIndex].name, current->arg2);
+    fprintf(outputFile, "\tsll %s, %s, 2\n", tempIntRegisters[offsetRegIndex].name, tempIntRegisters[offsetRegIndex].name);
+    fprintf(outputFile, "\tadd %s, %s, %s\n", tempIntRegisters[addressSumRegIndex].name, tempIntRegisters[addressRegIndex].name, tempIntRegisters[offsetRegIndex].name);
+    fprintf(outputFile, "\tlw %s, 0(%s)\n", tempFloatRegisters[resultRegIndex].name, tempIntRegisters[addressSumRegIndex].name);
+    fprintf(outputFile, "\tsw %s, %s\n", tempFloatRegisters[resultRegIndex].name, current->result);
+    
+    //  lw $t0, tempVar (load word (int))
+    // printf("\tlw %s, %s #STORE [%s = %s %s %s]\n", tempIntRegisters[regIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    // fprintf(outputFile, "\tlw %s, %s #STORE [%s = %s %s %s]\n", tempIntRegisters[regIndex].name, current->arg1, current->result, current->arg1, current->op, current->arg2);
+    // //  sw $t0, var (load word (int))
+    // printf("\tsw %s, %s\n", tempIntRegisters[regIndex].name, current->result);
+    // fprintf(outputFile, "\tsw %s, %s\n", tempIntRegisters[regIndex].name, current->result);
+
+    deallocateIntRegister(addressRegIndex);
+    deallocateIntRegister(offsetRegIndex);
+    deallocateIntRegister(addressSumRegIndex);
+    deallocateFloatRegister(resultRegIndex);
+}
+
 //Header Setup
 void declareMipsVars(const SymbolTable* table)
 {
@@ -640,10 +886,25 @@ void declareMipsVars(const SymbolTable* table)
         Symbol* current = table->table[i];
         while (current)
         {
-            if (current->type == VarType_Int)
-                fprintf(outputFile, "\t%s: .word 0\n", current->name);
-            else if (current->type == VarType_Float)
-                fprintf(outputFile, "\t%s: .float 0.0\n", current->name);
+            char* repeatToken;
+            if (current->type == VarType_Int) {
+                fprintf(outputFile, "\t%s: .word 0", current->name);
+                if (current->isArray) repeatToken = ", 0";
+            } else if (current->type == VarType_Float) {
+                fprintf(outputFile, "\t%s: .float 0.0", current->name);
+                if (current->isArray) repeatToken = ", 0.0";
+            }
+            
+            if (current->isArray)
+            {
+                for (int i = 0; i < current->arrSize; i++)
+                {
+                    fprintf(outputFile, "%s", repeatToken);
+                }
+            }
+            fprintf(outputFile, "\n");
+            
+            
             current = current->next;
         }
     }

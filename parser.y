@@ -48,8 +48,9 @@ Symbol* symbol = NULL;
 %token <intVal> INT_NUMBER
 %token <floatVal> FLOAT_NUMBER
 %token WRITE
+%token ARRAY
 /* %token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA */
-/* %token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA */
+%token LBRACKET RBRACKET
 /* %token FUNCTION RETURN ARRAY */
 
 %left <sval> PLUS MINUS
@@ -99,36 +100,63 @@ VarDecl: TYPE ID SEMI { printf("PARSER: Recognized variable declaration: %s\n", 
 
 								//First, append _var to the end of the variable name
 								//This will prevent conflicts with reserved instruction names in MIPS (e.g. "b")
-								// char varName[MAX_ID_LENGTH];
 								char* varName = getMipsVarName($2);
 								printf("Name with suffix: %s\n", varName);
 								
-								
 								// Check if variable has already been declared
-								
-								// symbol = lookupSymbol(symTab, $2);
 								symbol = lookupSymbol(symTab, varName);
 							
 								if (symbol != NULL) {	// Check if variable has already been declared
 									printf("PARSER: Variable %s at line %d has already been declared - COMPILATION HALTED\n", $2, yylineno);
 									exit(0);
 								} else {	
-										// Variable has not been declared yet	
-										// Create AST node for VarDecl
+									// Variable has not been declared yet	
+									// Create AST node for VarDecl
+									$$ = createNode(NodeType_VarDecl);
+									$$->data.varDecl.varType = strdup($1);
+									$$->data.varDecl.varName = strdup(varName);
+									// Set other fields as necessary
 
-										$$ = createNode(NodeType_VarDecl);
-										$$->data.varDecl.varType = strdup($1);
-										// $$->data.varDecl.varName = strdup($2);
-										$$->data.varDecl.varName = strdup(varName);
-										// Set other fields as necessary
-
-										// Add variable to symbol table
-										// addSymbol(symTab, $2, $1);
-										addSymbol(symTab, varName, $1);
-										printSymbolTable(symTab);
-									}
+									// Add variable to symbol table
+									addSymbol(symTab, varName, $1);
+									printSymbolTable(symTab);
+								}
 								
 							 }
+		| ARRAY TYPE ID LBRACKET INT_NUMBER RBRACKET SEMI{
+			printf("PARSER: Printing symbol table\n");
+			printSymbolTable(symTab);
+
+			printf("PARSER: Checking if variable has already been declared\n");
+
+			//First, append _var to the end of the variable name
+			//This will prevent conflicts with reserved instruction names in MIPS (e.g. "b")
+			char* varName = getMipsVarName($3);
+			printf("Name with suffix: %s\n", varName);
+			
+			
+			// Check if variable has already been declared
+			symbol = lookupSymbol(symTab, varName);
+		
+			if (symbol != NULL) {	// Check if variable has already been declared
+				printf("PARSER: Variable %s at line %d has already been declared - COMPILATION HALTED\n", $2, yylineno);
+				exit(0);
+			} else {	
+				// Variable has not been declared yet	
+				// Create AST node for VarDecl
+
+				$$ = createNode(NodeType_ArrDecl);
+				$$->data.arrDecl.varType = strdup($2);
+				$$->data.arrDecl.varName = strdup(varName);
+				$$->data.arrDecl.arrSize = $5;
+				// Set other fields as necessary
+
+				// Add variable to symbol table
+				addArrSymbol(symTab, varName, $2, $5);
+				printSymbolTable(symTab);
+			}
+
+			}
 		| TYPE ID {
                   printf ("Missing semicolon after declaring variable: %s\n", $2);
              }
@@ -154,14 +182,24 @@ Stmt: ID ASSIGN Expr SEMI { /* code TBD */
 								$$->data.assignStmt.expr = $3;
 								// Set other fields as necessary
  }
+	| ID LBRACKET Expr RBRACKET ASSIGN Expr SEMI { /* code TBD */
+								printf("PARSER: Recognized assignment statement\n");
+								$$ = createNode(NodeType_AssignArrStmt);
+								char* varName = getMipsVarName($1);
+
+								$$->data.assignArrStmt.varName = strdup(varName);
+								$$->data.assignArrStmt.operator = strdup($5);
+								$$->data.assignArrStmt.expr = $6;
+								$$->data.assignArrStmt.indexExpr = $3;
+								// Set other fields as necessary
+ }	
+	//TODO: Allow write statement to write expr, rather than just simpleID variables
 	| WRITE ID SEMI { printf("PARSER: Recognized write statement\n"); 
 							$$ = createNode(NodeType_WriteStmt);
 							
 							//Append _var to the end of the variable name
-							// char varName[MAX_ID_LENGTH];
 							char* varName = getMipsVarName($2);
 								
-							// $$->data.writeStmt.varName = strdup($2);
 							$$->data.writeStmt.varName = strdup(varName);
 					}
 ;
@@ -171,7 +209,6 @@ Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
 						$$ = createNode(NodeType_BinOp);
 						$$->data.binOp.left = $1;
 						$$->data.binOp.right = $3;
-						// $$->data.binOp.operator = strdup($2->data.binOp.operator);
 						$$->data.binOp.operator = strdup($2);
 						
 						// Set other fields as necessary
@@ -180,7 +217,6 @@ Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
 						$$ = createNode(NodeType_BinOp);
 						$$->data.binOp.left = $1;
 						$$->data.binOp.right = $3;
-						// $$->data.binOp.operator = strdup($2->data.binOp.operator);
 						$$->data.binOp.operator = strdup($2);
 						
 						// Set other fields as necessary
@@ -189,7 +225,6 @@ Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
 						$$ = createNode(NodeType_BinOp);
 						$$->data.binOp.left = $1;
 						$$->data.binOp.right = $3;
-						// $$->data.binOp.operator = strdup($2->data.binOp.operator);
 						$$->data.binOp.operator = strdup($2);
 						
 						// Set other fields as necessary
@@ -198,83 +233,51 @@ Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
 						$$ = createNode(NodeType_BinOp);
 						$$->data.binOp.left = $1;
 						$$->data.binOp.right = $3;
-						// $$->data.binOp.operator = strdup($2->data.binOp.operator);
 						$$->data.binOp.operator = strdup($2);
 						
 						// Set other fields as necessary
 					  }
 	| ID { printf("ASSIGNMENT statement \n"); 
-			$$ = malloc(sizeof(ASTNode));
-			$$->type = NodeType_SimpleID;
+			
+			$$ = createNode(NodeType_SimpleID);
+
+			//Append _var to the end of the variable name
+			char* varName = getMipsVarName($1);
+
+			$$->data.simpleID.name = varName;
+			// Set other fields as necessary	
+		}
+	| ID LBRACKET Expr RBRACKET { printf("ARRAY ACCESS statement \n"); 
+			$$ = createNode(NodeType_ArrAccess);
 
 			//Append _var to the end of the variable name
 			// char varName[MAX_ID_LENGTH];
 			char* varName = getMipsVarName($1);
 
-			// $$->data.simpleID.name = $1;
-			$$->data.simpleID.name = varName;
+			$$->data.arrAccess.name = varName;
+			$$->data.arrAccess.indexExpr = $3;
 			// Set other fields as necessary	
 		}
 	| INT_NUMBER { 
 				printf("PARSER: Recognized int number\n");
-				$$ = malloc(sizeof(ASTNode));
-				$$->type = NodeType_IntExpr;
+				$$ = createNode(NodeType_IntExpr);
 				$$->data.intExpr.number = $1;
 				// Set other fields as necessary
 			 }
 	| FLOAT_NUMBER { 
 				printf("PARSER: Recognized float number\n");
-				$$ = malloc(sizeof(ASTNode));
-				$$->type = NodeType_FloatExpr;
+				$$ = createNode(NodeType_FloatExpr);
 				$$->data.floatExpr.number = $1;
 				// Set other fields as necessary
 			 }
 			 /*TODO: FLOAT_NUMBER*/
 ;
 
-/* Term: ID { printf("ASSIGNMENT statement \n"); 
-			$$ = malloc(sizeof(ASTNode));
-			$$->type = NodeType_SimpleID;
-
-			//Append _var to the end of the variable name
-			// char varName[MAX_ID_LENGTH];
-			char* varName = getMipsVarName($1);
-
-			// $$->data.simpleID.name = $1;
-			$$->data.simpleID.name = varName;
-			// Set other fields as necessary	
-		}
-	| NUMBER { 
-				printf("PARSER: Recognized number\n");
-				$$ = malloc(sizeof(ASTNode));
-				$$->type = NodeType_IntExpr;
-				$$->data.intExpr.number = $1;
-				// Set other fields as necessary
-			 } */
-
-/* BinOp: PLUS {
-				printf("PARSER: Recognized binary operator\n");
-				$$ = malloc(sizeof(ASTNode));
-				$$->type = NodeType_BinOp;
-				// $$->data.binOp.operator = *$1;
-				$$->data.binOp.operator = $1;
-				// printf(" - PARSER: %s\n", $$->data.binOp.operator);
-				// Set other fields as necessary
-            }
-	| MINUS {
-				printf("PARSER: Recognized binary operator\n");
-				$$ = createNode(NodeType_BinOp);
-				// $$->data.binOp.operator = *$1;
-				$$->data.binOp.operator = $1;
-				// printf(" - PARSER: %s\n", $$->data.binOp.operator);
-				// Set other fields as necessary
-            } */
-;
-
 %%
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s\n", s);
+    /* fprintf(stderr, "Error: %s at (line %d:%d)\n", s, lines, chars); */
 }
 
 int main(int argc, char **argv) {
@@ -293,7 +296,8 @@ int main(int argc, char **argv) {
 
 	/* initializeTempVars(); */
 
-    if (yyparse() == 0)
+	int parseCode = yyparse();
+    if (parseCode == 0)
 	{
         // Successfully parsed
 		printf("Parsing successful!\n");
@@ -327,7 +331,7 @@ int main(int argc, char **argv) {
 		freeSymbolTable(symTab);
 	}
     else
-        printf("Parsing failed.\n");
+        printf("Parsing failed. (error code: %d)\n", parseCode);
 
     return 0;
 }

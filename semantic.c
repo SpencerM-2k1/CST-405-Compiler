@@ -44,6 +44,11 @@ void semanticAnalysis(ASTNode* node) {
             // addSymbol(symTabRef, node->data.varDecl.varName, node->data.varDecl.varType); //Unnecessary, symbol table handled by parser.y rule
             break;
 
+        case NodeType_ArrDecl:
+            printf("SEMANTIC: Recognized NodeType_ArrDecl\n");
+            // addSymbol(symTabRef, node->data.varDecl.varName, node->data.varDecl.varType); //Unnecessary, symbol table handled by parser.y rule
+            break;
+
         case NodeType_StmtList:
             printf("SEMANTIC: Recognized NodeType_StmtList\n");
             semanticAnalysis(node->data.stmtList.stmt);
@@ -58,6 +63,26 @@ void semanticAnalysis(ASTNode* node) {
             semanticAnalysis(node->data.assignStmt.expr);  // Analyze the right-hand side expression
             break;
 
+        case NodeType_AssignArrStmt:
+            printf("SEMANTIC: Recognized NodeType_AssignArrStmt\n");
+            if (lookupSymbol(symTabRef, node->data.assignArrStmt.varName) == NULL) {
+                fprintf(stderr, "Semantic error: Array '%s' not declared\n", node->data.assignArrStmt.varName);
+            }
+            semanticAnalysis(node->data.assignArrStmt.indexExpr);
+            semanticAnalysis(node->data.assignArrStmt.expr);
+
+            //TYPE-CHECK: Index MUST be an integer
+            if (getExprType(node->data.assignArrStmt.indexExpr) != VarType_Int)
+            {
+                fprintf(stderr, "Semantic error: Index of '%s' is not an integer\n", node->data.assignArrStmt.varName);
+                exit(1);
+            }
+            else
+            {
+                printf("SEMANTIC: Array index successfully identified as an integer\n");
+            }
+            break;
+
         case NodeType_BinOp:
             printf("SEMANTIC: Recognized NodeType_BinOp\n");
             printf("SEMANTIC: Entering left...\n");
@@ -67,22 +92,29 @@ void semanticAnalysis(ASTNode* node) {
             printf("SEMANTIC: Exiting NodeType_BinOp case\n");
             break;
 
-        // case NodeType_BinOp:
-        //     printf("SEMANTIC: Recognized NodeType_BinOp\n");
-        //     if (lookupSymbol(symTabRef, node->data.binOp.left->data.varDecl.varName) == NULL) {
-        //         fprintf(stderr, "Semantic error: Variable '%s' not declared\n", node->data.binOp.left->data.varDecl.varName);
-        //     }
-        //     if (lookupSymbol(symTabRef, node->data.binOp.right->data.varDecl.varName) == NULL) {
-        //         fprintf(stderr, "Semantic error: Variable '%s' not declared\n", node->data.binOp.right->data.varDecl.varName);
-        //     }
-        //     semanticAnalysis(node->data.binOp.left, symTabRef);
-        //     semanticAnalysis(node->data.binOp.right, symTabRef);
-        //     break;
-
         case NodeType_SimpleID:
             printf("SEMANTIC: Recognized NodeType_SimpleID\n");
             if (lookupSymbol(symTabRef, node->data.simpleID.name) == NULL) {
                 fprintf(stderr, "Semantic error: Variable '%s' not declared\n", node->data.simpleID.name);
+            }
+            break;
+
+        case NodeType_ArrAccess:
+            printf("SEMANTIC: Recognized NodeType_ArrAccess\n");
+            if (lookupSymbol(symTabRef, node->data.arrAccess.name) == NULL) {
+                fprintf(stderr, "Semantic error: Array '%s' not declared\n", node->data.simpleID.name);
+            }
+            semanticAnalysis(node->data.arrAccess.indexExpr);
+
+            //TYPE-CHECK: Index MUST be an integer
+            if (getExprType(node->data.arrAccess.indexExpr) != VarType_Int)
+            {
+                fprintf(stderr, "Semantic error: Index of '%s' is not an integer\n", node->data.assignArrStmt.varName);
+                exit(1);
+            }
+            else
+            {
+                printf("SEMANTIC: Array index successfully identified as an integer\n");
             }
             break;
 
@@ -104,11 +136,11 @@ void semanticAnalysis(ASTNode* node) {
             break;
 
         default:
-            fprintf(stderr, "Unknown Node Type (type: %d)\n", node->type);
+            fprintf(stderr, "SEMANTIC: Unknown Node Type (type: %d)\n", node->type);
             break;
     }
 
-    if (node->type == NodeType_BinOp || node->type == NodeType_IntExpr || node->type == NodeType_FloatExpr || node->type == NodeType_SimpleID) {
+    if (node->type == NodeType_BinOp || node->type == NodeType_IntExpr || node->type == NodeType_FloatExpr || node->type == NodeType_SimpleID || node->type == NodeType_ArrAccess) {
         TAC* tac = generateTACForBinOp(node);
         printTAC(tac);
     } else if (node->type == NodeType_WriteStmt) {
@@ -117,6 +149,8 @@ void semanticAnalysis(ASTNode* node) {
         printTAC(tac);
     } else if (node->type == NodeType_AssignStmt) { //Assign final temp value to original symbol
         TAC* tac = generateTACForAssign(node);
+    } else if (node->type == NodeType_AssignArrStmt) { //Assign final temp value array index
+        TAC* tac = generateTACForAssignArr(node);
     }
 }
 
@@ -137,8 +171,6 @@ TAC* generateTACForBinOp(ASTNode* expr) {
             instruction->arg1 = strdup(arg1Operand->operandID);
             printf("arg1Operand->operandID: %s\n",arg1Operand->operandID);
             instruction->arg2 = strdup(arg2Operand->operandID);
-            // freeOperand(arg1Operand);
-            // freeOperand(arg2Operand);
 
             // TEMPORARY: Floats and Ints cannot be combined in an expression for now
             // printf("%d %d", arg1Operand->operandType, arg2Operand->operandType);
@@ -224,7 +256,8 @@ TAC* generateTACForBinOp(ASTNode* expr) {
             //The following elements of the write expression are type-specific
             // TODO: Nested switch-case is gross, I know. Probably need to split the function up later
             //     Get type
-            Symbol* argSymbol = lookupSymbol(symTabRef, expr->data.writeStmt.varName); //Get the symbol of the variable being written
+            // Symbol* argSymbol = lookupSymbol(symTabRef, expr->data.writeStmt.varName); //Get the symbol of the variable being written
+            Symbol* argSymbol = lookupSymbol(symTabRef, expr->data.simpleID.name); //Get the symbol of the variable being accessed
 
             switch (argSymbol->type) //Type of written argument decides the following...
             {
@@ -246,6 +279,48 @@ TAC* generateTACForBinOp(ASTNode* expr) {
 
             //Push operand to stack to use in ongoing BinOp
             Operand* newOperand = createOperandStruct(instruction->result, argSymbol->type);
+            pushOperand(newOperand);
+            printOperandStack();
+            break;
+        }
+
+        case NodeType_ArrAccess: { //Variable ID
+            printf("Generating TAC for simple ID\n");
+            instruction->arg1 = strdup(expr->data.simpleID.name);
+            Symbol* arrSymbol = lookupSymbol(symTabRef, expr->data.arrAccess.name);
+            // instruction->arg2 = createTempVar(arrSymbol->type);
+            Operand* arg2Operand = popOperand();
+            instruction->arg2 = strdup(arg2Operand->operandID);
+            // printf("instruction->arg2");
+            
+            instruction->result = createTempVar(arrSymbol->type);
+            
+            //The following elements of the write expression are type-specific
+            // TODO: Nested switch-case is gross, I know. Probably need to split the function up later
+            //     Get type
+            // Symbol* argSymbol = lookupSymbol(symTabRef, expr->data.writeStmt.varName); //Get the symbol of the variable being written
+            // Symbol* argSymbol = lookupSymbol(symTabRef, expr->data.arrAccess.name); //Get the symbol of the array being accessed
+
+            switch (arrSymbol->type) //Type of written argument decides the following...
+            {
+                case(VarType_Int):
+                    instruction->op = strdup("load.intIndex");
+                    break;
+                case(VarType_Float):
+                    instruction->op = strdup("load.floatIndex");
+                    break;
+                case(VarType_Error):
+                    printf("SEMANTIC: Unsupported variable type for write statement! Halting...\n");
+                    exit(1);
+                    break;
+                default:
+                    printf("SEMANTIC: UNHANDLED VARTYPE! HALTING...\n");
+                    exit(1);
+                    break;
+            }
+
+            //Push operand to stack to use in ongoing BinOp
+            Operand* newOperand = createOperandStruct(instruction->result, arrSymbol->type);
             pushOperand(newOperand);
             printOperandStack();
             break;
@@ -353,6 +428,57 @@ TAC* generateTACForAssign(ASTNode* assignStmt) {
             break;
         case(VarType_Float):
             instruction->op = strdup("store.float");
+            break;
+        case(VarType_Error):
+            printf("SEMANTIC: Unsupported variable type for assign statement! Halting...\n");
+            exit(1);
+            break;
+        default:
+            printf("SEMANTIC: UNHANDLED VARTYPE! HALTING...\n");
+            exit(1);
+            break;
+    }
+
+    //instruction->next = NULL; // Make sure to null-terminate the new instruction
+
+    // Append to the global TAC list
+    // appendTAC(&tacHead, instruction);
+    appendTAC(&tacHead, &tacTail, instruction);
+
+    return instruction;
+}
+
+//Generate TAC for assigning a constant to a temp var
+TAC* generateTACForAssignArr(ASTNode* assignArrStmt) {
+    if (!assignArrStmt) return NULL;
+
+    TAC* instruction = (TAC*)malloc(sizeof(TAC));
+    if (!instruction) return NULL;
+
+    printf("Generating TAC for array index assignment\n");
+    //Get temporary variable from assigned expr
+    Operand* arg1Operand = popOperand(); //Expr value
+    Operand* arg2Operand = popOperand(); //Index
+
+    //Type-agnostic elements
+    instruction->arg1 = strdup(arg1Operand->operandID);
+
+    instruction->arg2 = strdup(arg2Operand->operandID);
+    instruction->result = strdup(assignArrStmt->data.assignArrStmt.varName);
+
+    //Type-specific elements
+    //The following elements of the write expression are type-specific
+    
+    //     Get type
+    Symbol* argSymbol = lookupSymbol(symTabRef, assignArrStmt->data.assignArrStmt.varName); //Get the symbol of the variable being written
+
+    switch (argSymbol->type) //Type of written argument decides the following...
+    {
+        case(VarType_Int):
+            instruction->op = strdup("store.intIndex");
+            break;
+        case(VarType_Float):
+            instruction->op = strdup("store.floatIndex");
             break;
         case(VarType_Error):
             printf("SEMANTIC: Unsupported variable type for assign statement! Halting...\n");
@@ -523,4 +649,43 @@ void replaceTAC(TAC** oldTAC, TAC** newTAC)
     (*newTAC)->next = (*oldTAC)->next;
 
     freeTAC(oldTAC);
+}
+
+//Traverse a Expr tree and determine its VarType
+VarType getExprType(ASTNode* expr)
+{
+    switch (expr->type)
+    {
+        case (NodeType_IntExpr):
+            return VarType_Int;
+            break;
+        case (NodeType_FloatExpr):
+            return VarType_Float;
+            break;
+        case (NodeType_SimpleID):
+            Symbol* varSymbol = lookupSymbol(symTabRef, expr->data.simpleID.name);
+            if (varSymbol->isArray) {
+                printf("SEMANTIC ERROR: Arrays are not valid expr operands, please specify an index (e.g. arr[0])\n");
+                exit(1);
+            }
+            return varSymbol->type;
+            break;
+        case (NodeType_ArrAccess):
+            Symbol* arrSymbol = lookupSymbol(symTabRef, expr->data.arrAccess.name);
+            return arrSymbol->type;
+            break;
+        case (NodeType_BinOp):
+            ASTNode* operand1 = expr->data.binOp.left;
+            VarType operand1Type = getExprType(operand1);
+            ASTNode* operand2 = expr->data.binOp.right;
+            VarType operand2Type = getExprType(operand2);
+            if ((operand1Type == VarType_Float) || (operand2Type == VarType_Float)) return VarType_Float; //First, check if either operand is a float: type = float
+            if ((operand1Type == VarType_Int) && (operand2Type == VarType_Int)) return VarType_Int;       //Next, check if both are Ints: type = int
+            return VarType_Error;//Otherwise, return an error
+            break;
+        default:
+            fprintf(stderr,"SEMANTIC: Invalid node type (%d) in getExprType\n", expr->type);
+            exit(1);
+            break;
+    }
 }

@@ -98,6 +98,47 @@ void addSymbol(SymbolTable* table, const char* name, const char* typeString) {
     newSymbol->type = type;
     newSymbol->scopeLevel = table->currentScope;
     newSymbol->next = table->table[hashval];
+
+    //Array elements are unused
+    newSymbol->isArray = false;
+    newSymbol->arrSize = 0;
+
+    table->table[hashval] = newSymbol;
+}
+
+// Add an array symbol to the symbol table
+void addArrSymbol(SymbolTable* table, const char* name, const char* typeString, int size) {
+    if (size <= 0) {
+        printf("ERROR: Array size must be greater than zero.");
+        exit(1);
+    }
+    if (lookupSymbolInCurrentScope(table, name)) {
+        printf("Error: Symbol '%s' already exists in the current scope.\n", name);
+        return;
+    }
+
+    VarType type;
+    if (strcmp(typeString, "int") == 0) {
+        type = VarType_Int;
+    } else if (strcmp(typeString, "float") == 0) {
+        type = VarType_Float;
+    } else {
+        printf("ERROR: VarType not recognized. Halting compilation...");
+        exit(1);
+    }
+
+    unsigned int hashval = hash(name, TABLE_SIZE);
+    Symbol* newSymbol = (Symbol*)malloc(sizeof(Symbol));
+    newSymbol->name = strdup(name);
+    printf("newSymbol->name: %s\n",newSymbol->name);
+    newSymbol->type = type;
+    newSymbol->scopeLevel = table->currentScope;
+    newSymbol->next = table->table[hashval];
+
+    //Set array elements
+    newSymbol->isArray = true;
+    newSymbol->arrSize = size;
+
     table->table[hashval] = newSymbol;
 }
 
@@ -129,7 +170,11 @@ void printSymbolTable(SymbolTable* table) {
     for (int i = 0; i < TABLE_SIZE; i++) {
         Symbol* sym = table->table[i];
         while (sym != NULL) {
-            printf("Name: %s, Type: %s, Scope Level: %d\n", sym->name, varTypeToString(sym->type), sym->scopeLevel);
+            if (!sym->isArray) { //Non-array
+                printf("Name: %s, Type: %s, Scope Level: %d\n", sym->name, varTypeToString(sym->type), sym->scopeLevel);
+            } else { //Array
+                printf("Name: %s, Type: %s[%d], Scope Level: %d\n", sym->name, varTypeToString(sym->type), sym->arrSize, sym->scopeLevel);
+            }
             sym = sym->next;
         }
     }

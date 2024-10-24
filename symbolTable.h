@@ -2,6 +2,7 @@
 #define SYMBOL_TABLE_H
 
 #include "commons/types.h"
+#include <stdbool.h>
 
 #define TABLE_SIZE 100  // Adjust size as needed
 
@@ -11,6 +12,11 @@ typedef struct Symbol {
     VarType type;
     int scopeLevel;
     struct Symbol* next;  // For linked list of symbols in case of hash collisions
+
+    //Array fields, ignored for non-array symbols
+    bool isArray; //If false, array fields are ignored
+    int arrSize; //Length of array. Note: arrays are one-dimensional
+
 } Symbol;
 
 // Define the structure for the symbol table
@@ -26,6 +32,7 @@ void freeSymbolTable(SymbolTable* symTab);
 void enterScope(SymbolTable* table);
 void exitScope(SymbolTable* table);
 void addSymbol(SymbolTable* symTab, const char* varName, const char* typeString);
+void addArrSymbol(SymbolTable* symTab, const char* varName, const char* typeString, int size);
 Symbol* lookupSymbol(SymbolTable* symTab, const char* varName);
 Symbol* lookupSymbolInCurrentScope(SymbolTable* symTab, const char* varName);
 void printSymbolTable(SymbolTable* symTab);

@@ -7,16 +7,19 @@
 
 // NodeType enum to differentiate between different kinds of AST nodes
 typedef enum { 
-    NodeType_Program,
-    NodeType_VarDeclList, 
-    NodeType_VarDecl, 
-    NodeType_IntExpr,
-    NodeType_FloatExpr,
-    NodeType_SimpleID,
-    NodeType_BinOp, 
-    NodeType_StmtList,
-    NodeType_AssignStmt,
-    NodeType_WriteStmt,
+    NodeType_Program,       //root
+    NodeType_VarDeclList,   //Linked list containing var/arr declaration nodes
+    NodeType_VarDecl,       //Declaration of a var
+    NodeType_ArrDecl,       //Declaration of an array
+    NodeType_IntExpr,       //Int literal
+    NodeType_FloatExpr,     //Float literal
+    NodeType_SimpleID,      //Variable ID
+    NodeType_ArrAccess,     //Array ID + Index
+    NodeType_BinOp,         //Binary operator
+    NodeType_StmtList,      //Linked list containing statement nodes
+    NodeType_AssignStmt,    //Assign a value to a variable
+    NodeType_AssignArrStmt, //Assign a value to the index of an array
+    NodeType_WriteStmt,     //Print an expression to the console
 } NodeType;
 
 // Forward declaration of ASTNode to use in struct definitions
@@ -41,6 +44,12 @@ typedef struct ASTNode {
             char* varName;
         } varDecl;
 
+        struct ArrayNode {
+            char* varType;
+            char* varName;
+            int arrSize;
+        } arrDecl;
+
         struct IntExprNode {
             int number;
         } intExpr;
@@ -52,6 +61,11 @@ typedef struct ASTNode {
         struct SimpleIDNode {
             char* name;
         } simpleID;
+
+        struct ArrAccessNode {
+            char* name;
+            struct ASTNode* indexExpr;
+        } arrAccess;
 
         struct BinOpNode {
             char* operator;
@@ -70,11 +84,12 @@ typedef struct ASTNode {
             struct ASTNode* expr;
         } assignStmt;
 
-        // struct BinOpNode {
-        //     char* operator;
-        //     struct ASTNode* left;
-        //     struct ASTNode* right;
-        // } binOp;
+        struct AssignArrStmtNode {
+            char* operator; // e.g., '='
+            char* varName;
+            struct ASTNode* indexExpr;
+            struct ASTNode* expr;
+        } assignArrStmt;
 
         struct WriteStmtNode {
             char* varName;

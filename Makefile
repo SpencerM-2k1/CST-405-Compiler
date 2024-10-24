@@ -44,7 +44,7 @@ lex.yy.c: lexer.l parser.tab.h
 	flex lexer.l
 
 parser.tab.c parser.tab.h: parser.y
-	bison -d -v parser.y
+	bison -d -v -t parser.y
 
 # Run the parser and redirect output to output.txt
 run: $(EXEC)
