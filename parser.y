@@ -8,6 +8,7 @@
 #include "semantic.h"
 #include "codeGenerator.h"
 #include "optimizer.h"
+#include "commons/types.h"
 
 #define TABLE_SIZE 100
 #define MAX_ID_LENGTH 10
@@ -24,6 +25,9 @@ extern TAC* tacHead;  // Declare the head of the linked list of TAC entries
 void yyerror(const char* s);
 // void getMipsVarName(char* returnBuffer, unsigned int bufferSize, char* varName);
 char* getMipsVarName(char* varName);
+
+extern int chars;
+extern int lines;
 
 ASTNode* root = NULL; 
 SymbolTable* symTab = NULL;
@@ -49,8 +53,10 @@ Symbol* symbol = NULL;
 %token <floatVal> FLOAT_NUMBER
 %token WRITE
 %token ARRAY
-/* %token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA */
-%token LBRACKET RBRACKET
+%token FUNCTION
+%token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA
+/* %token LBRACKET RBRACKET */
+/* %token LPAREN RPAREN */
 /* %token FUNCTION RETURN ARRAY */
 
 %left <sval> PLUS MINUS
@@ -58,7 +64,8 @@ Symbol* symbol = NULL;
 /* %right POWER */
 /* %nonassoc UMINUS */
 
-%type <ast> Program VarDecl VarDeclList Stmt StmtList Expr
+%type <ast> Program VarDecl VarDeclList DeclList Stmt StmtList Expr
+%type <ast> FuncDecl ParamList Param FuncCall ArgList Arg
 /* %type <ast> FuncDeclList FuncDecl FuncCall ParamList ArgList */
 /* %type <ast> ArrayDecl ArrayIndex */
 
@@ -66,7 +73,7 @@ Symbol* symbol = NULL;
 
 %%
 
-Program: VarDeclList StmtList    { printf("The PARSER has started\n"); 
+Program: DeclList StmtList    { printf("The PARSER has started\n"); 
 									root = createNode(NodeType_Program);
 									root->data.program.varDeclList = $1;
 									root->data.program.stmtList = $2;
@@ -75,21 +82,61 @@ Program: VarDeclList StmtList    { printf("The PARSER has started\n");
 
 ;
 
-VarDeclList:  {/*empty, i.e. it is possible not to declare a variable*/
-				$$ = createNode(NodeType_VarDeclList); //Empty ASTNode prevents Unknown Node Error
-				}
-	| VarDecl VarDeclList {  printf("PARSER: Recognized variable declaration list\n"); 
+//I don't know why, I don't WANT to know why, but for some reason
+//function declarations just don't work unless we merge VarDeclList
+//and FuncDeclList into one node type.
+
+//I guess it's a win-win, it makes the grammar less strict... but why?
+//Probably some jank because FuncDecl's start with TYPE ID and Bison
+//fails to cut off the VarDeclList because it's still trying to parse
+//the next variable. Maybe? Don't know for sure.
+
+// -Spencer
+
+DeclList:  {/*empty, i.e. it is possible not to declare a variable*/
+				// $$ = createNode(NodeType_DeclList); //Empty ASTNode prevents Unknown Node Error
+				$$ = NULL;
+			  }
+	| VarDecl DeclList {  printf("PARSER: Recognized declaration list (variable entry)\n"); 
 
 							// Create AST node for VarDeclList
-							$$ = createNode(NodeType_VarDeclList);
-							$$->data.varDeclList.varDecl = $1;
-							$$->data.varDeclList.varDeclList = $2;
+							$$ = createNode(NodeType_DeclList);
+							$$->data.declList.decl = $1;
+							$$->data.declList.next = $2;
+				
+							// Set other fields as necessary
+
+							
+							}
+	| FuncDecl DeclList {  printf("PARSER: Recognized declaration list (function entry)\n"); 
+
+							// Create AST node for VarDeclList
+							$$ = createNode(NodeType_DeclList);
+							$$->data.declList.decl = $1;
+							$$->data.declList.next = $2;
 				
 							// Set other fields as necessary
 
 							
 							}
 ;
+
+VarDeclList:  {/*empty, i.e. it is possible not to declare a variable*/
+				// $$ = createNode(NodeType_DeclList); //Empty ASTNode prevents Unknown Node Error
+				$$ = NULL;
+			  }
+	| VarDecl VarDeclList {  printf("PARSER: Recognized function-scoped variable declaration list\n"); 
+
+							// Create AST node for VarDeclList
+							$$ = createNode(NodeType_VarDeclList);
+							$$->data.varDeclList.varDecl = $1;
+							$$->data.varDeclList.next = $2;
+				
+							// Set other fields as necessary
+
+							
+							}
+							;
 
 VarDecl: TYPE ID SEMI { printf("PARSER: Recognized variable declaration: %s\n", $2);
 
@@ -156,13 +203,74 @@ VarDecl: TYPE ID SEMI { printf("PARSER: Recognized variable declaration: %s\n", 
 				printSymbolTable(symTab);
 			}
 
-			}
-		| TYPE ID {
+			};
+		/* | TYPE ID {
                   printf ("Missing semicolon after declaring variable: %s\n", $2);
-             }
+             } */
 
-StmtList:  {/*empty, i.e. it is possible not to have any statement*/
-			$$ = createNode(NodeType_StmtList); //Empty ASTNode prevents Unknown Node Error
+/* FuncDeclList
+    : 
+        {
+            $$ = NULL;
+        }
+    | FuncDecl FuncDeclList
+        {
+            $$ = createNode(NodeType_FuncDeclList);
+            $$->data.funcDeclList.funcDecl = $1;
+            $$->data.funcDeclList.next = $2;
+        }
+    ; */
+
+FuncDecl
+    : TYPE ID LPAREN ParamList RPAREN LBRACE VarDeclList StmtList RBRACE
+        {
+            printf("PARSER: Recognized function declaration: %s\n", $2);
+
+            // Add function to symbol table
+            // addSymbol(symTab, $2, "function");
+
+            // Create AST node for FuncDecl
+            $$ = createNode(NodeType_FuncDecl);
+            $$->data.funcDecl.name = strdup($2);
+			$$->data.funcDecl.returnType = stringToVarType($1);
+            $$->data.funcDecl.paramList = $4;
+			$$->data.funcDecl.varDeclList = $7;
+            $$->data.funcDecl.stmtList = $8;
+        }
+    ;
+
+ParamList
+    : /* empty */
+        {
+            $$ = NULL;
+        }
+    | Param
+        {
+            // Create AST node for single-item parameter list
+            $$ = createNode(NodeType_ParamList);
+			$$->data.paramList.param = $1;
+            $$->data.paramList.next = NULL;
+        }
+    | Param COMMA ParamList
+        {
+            // Create AST node for parameter list
+            $$ = createNode(NodeType_ParamList);
+			$$->data.paramList.param = $1;
+            $$->data.paramList.next = $3;
+        }
+    ;
+
+Param : TYPE ID {
+			$$ = createNode(NodeType_Param);
+            $$->data.param.type = stringToVarType($1);
+            // $$->data.paramList.varType = strdup($1);
+            $$->data.param.name = strdup($2);
+		}
+	;
+
+StmtList:  	{/*empty, i.e. it is possible not to have any statement*/
+				// $$ = createNode(NodeType_StmtList); //Empty ASTNode prevents Unknown Node Error
+				$$ = NULL;
 			}
 	| Stmt StmtList { printf("PARSER: Recognized statement list\n");
 						$$ = createNode(NodeType_StmtList);
@@ -194,14 +302,15 @@ Stmt: ID ASSIGN Expr SEMI { /* code TBD */
 								// Set other fields as necessary
  }	
 	//TODO: Allow write statement to write expr, rather than just simpleID variables
-	| WRITE ID SEMI { printf("PARSER: Recognized write statement\n"); 
-							$$ = createNode(NodeType_WriteStmt);
+	| WRITE ID SEMI { 	printf("PARSER: Recognized write statement\n"); 
+						$$ = createNode(NodeType_WriteStmt);
+						
+						//Append _var to the end of the variable name
+						char* varName = getMipsVarName($2);
 							
-							//Append _var to the end of the variable name
-							char* varName = getMipsVarName($2);
-								
-							$$->data.writeStmt.varName = strdup(varName);
+						$$->data.writeStmt.varName = strdup(varName);
 					}
+	| FuncCall SEMI
 ;
 
 //TODO: Exponent binOp
@@ -271,13 +380,48 @@ Expr: Expr PLUS Expr { printf("PARSER: Recognized expression\n");
 				// Set other fields as necessary
 			 }
 			 /*TODO: FLOAT_NUMBER*/
+	| FuncCall
 ;
+
+FuncCall : ID LPAREN ArgList RPAREN {
+				$$ = createNode(NodeType_FuncCall);
+				$$->data.funcCall.name = $1;
+				$$->data.funcCall.argList = $3;
+			 }
+;
+
+ArgList
+    : /* empty */
+        {
+            $$ = NULL;
+        }
+    | Arg
+        {
+            // Create AST node for single-item parameter list
+            $$ = createNode(NodeType_ArgList);
+			$$->data.argList.arg = $1;
+            $$->data.argList.next = NULL;
+        }
+    | Arg COMMA ArgList
+        {
+            // Create AST node for parameter list
+            $$ = createNode(NodeType_ArgList);
+			$$->data.argList.arg = $1;
+            $$->data.argList.next = $3;
+        }
+    ;
+
+Arg : Expr
+		{
+			$$ = createNode(NodeType_Arg);
+			$$->data.arg.expr = $1;
+		}
 
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
-    /* fprintf(stderr, "Error: %s at (line %d:%d)\n", s, lines, chars); */
+    /* fprintf(stderr, "Error: %s\n", s); */
+    fprintf(stderr, "Error: %s at (line %d:%d)\n", s, lines, chars);
 }
 
 int main(int argc, char **argv) {

@@ -62,12 +62,18 @@ extern int yydebug;
     FLOAT_NUMBER = 263,            /* FLOAT_NUMBER  */
     WRITE = 264,                   /* WRITE  */
     ARRAY = 265,                   /* ARRAY  */
-    LBRACKET = 266,                /* LBRACKET  */
-    RBRACKET = 267,                /* RBRACKET  */
-    PLUS = 268,                    /* PLUS  */
-    MINUS = 269,                   /* MINUS  */
-    MULTIPLY = 270,                /* MULTIPLY  */
-    DIVIDE = 271                   /* DIVIDE  */
+    FUNCTION = 266,                /* FUNCTION  */
+    LPAREN = 267,                  /* LPAREN  */
+    RPAREN = 268,                  /* RPAREN  */
+    LBRACE = 269,                  /* LBRACE  */
+    RBRACE = 270,                  /* RBRACE  */
+    LBRACKET = 271,                /* LBRACKET  */
+    RBRACKET = 272,                /* RBRACKET  */
+    COMMA = 273,                   /* COMMA  */
+    PLUS = 274,                    /* PLUS  */
+    MINUS = 275,                   /* MINUS  */
+    MULTIPLY = 276,                /* MULTIPLY  */
+    DIVIDE = 277                   /* DIVIDE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -76,14 +82,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 36 "parser.y"
+#line 40 "parser.y"
 
     char* sval;
     int intVal;
     float floatVal;
     struct ASTNode* ast;
 
-#line 87 "parser.tab.h"
+#line 93 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -33,10 +33,10 @@ void semanticAnalysis(ASTNode* node) {
             semanticAnalysis(node->data.program.stmtList);
             break;
 
-        case NodeType_VarDeclList:
+        case NodeType_DeclList:
             printf("SEMANTIC: Recognized NodeType_VarDeclList\n");
-            semanticAnalysis(node->data.varDeclList.varDecl);
-            semanticAnalysis(node->data.varDeclList.varDeclList);
+            semanticAnalysis(node->data.declList.decl);
+            semanticAnalysis(node->data.declList.next);
             break;
 
         case NodeType_VarDecl:

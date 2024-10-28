@@ -75,9 +75,15 @@ test3: $(EXEC)
 	@echo "MIPS code saved to $(OUTPUT_DIR)/output.asm"
 	@echo "Output log saved to $(OUTPUT_DIR)/output.txt"
 
+# Test 4: Function Call Test
+test4: $(EXEC)
+	./$(EXEC) $(INPUT_DIR)/testProg4.cmm > $(OUTPUT_DIR)/output.txt # This generates MIPS assembly via codeGenerator.c
+	@echo "MIPS code saved to $(OUTPUT_DIR)/output.asm"
+	@echo "Output log saved to $(OUTPUT_DIR)/output.txt"
+
 # Debug with gdb
 debug: $(EXEC)
-	gdb --args $(EXEC) $(INPUT_DIR)/testProg2.cmm
+	gdb --args $(EXEC) $(INPUT_DIR)/testProg4.cmm
 
 # Clean rule to remove compiled files
 clean:

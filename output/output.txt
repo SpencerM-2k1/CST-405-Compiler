@@ -56,11 +56,11 @@ Name: baseIndex_var, Type: VarType_Int, Scope Level: 0
 Name: floatArray_var, Type: VarType_Int[5], Scope Level: 0
 Name: intArray_var, Type: VarType_Int[5], Scope Level: 0
 Name: outputInt_var, Type: VarType_Int, Scope Level: 0
-PARSER: Recognized variable declaration list
-PARSER: Recognized variable declaration list
-PARSER: Recognized variable declaration list
-PARSER: Recognized variable declaration list
-PARSER: Recognized variable declaration list
+PARSER: Recognized declaration list (variable entry)
+PARSER: Recognized declaration list (variable entry)
+PARSER: Recognized declaration list (variable entry)
+PARSER: Recognized declaration list (variable entry)
+PARSER: Recognized declaration list (variable entry)
 PARSER: Recognized int number
 PARSER: Recognized assignment statement
 ASSIGNMENT statement 
@@ -183,17 +183,16 @@ PARSER: Recognized statement list
 The PARSER has started
 Parsing successful!
 Program
-├── VarDeclList
+├── DeclList
 |   ├── ArrDecl: array int intArray_var[5]
-|   └── VarDeclList
+|   └── DeclList
 |       ├── ArrDecl: array int floatArray_var[5]
-|       └── VarDeclList
+|       └── DeclList
 |           ├── VarDecl: int baseIndex_var
-|           └── VarDeclList
+|           └── DeclList
 |               ├── VarDecl: int outputInt_var
-|               └── VarDeclList
-|                   ├── VarDecl: float outputFloat_var
-|                   └── VarDeclList
+|               └── DeclList
+|                   └── VarDecl: float outputFloat_var
 └── StmtList
     ├── AssignStmt: baseIndex_var =
     |   └── IntExpr: 0
@@ -312,8 +311,7 @@ Program
                                                                                                                         |   └── ArrAccess: floatArray_var
                                                                                                                         |       └── IntExpr: 4
                                                                                                                         └── StmtList
-                                                                                                                            ├── WriteStmt: outputFloat_var
-                                                                                                                            └── StmtList - END
+                                                                                                                            └── WriteStmt: outputFloat_var
 Symbol Table:
 Name: outputFloat_var, Type: VarType_Float, Scope Level: 0
 Name: baseIndex_var, Type: VarType_Int, Scope Level: 0
@@ -335,7 +333,6 @@ SEMANTIC: Recognized NodeType_VarDeclList
 SEMANTIC: Recognized NodeType_VarDecl
 SEMANTIC: Recognized NodeType_VarDeclList
 SEMANTIC: Recognized NodeType_VarDecl
-SEMANTIC: Recognized NodeType_VarDeclList
 SEMANTIC: Recognized NodeType_StmtList
 SEMANTIC: Recognized NodeType_AssignStmt
 SEMANTIC: Recognized NodeType_IntExpr
@@ -871,7 +868,6 @@ Generating TAC for write statement
 f9 = outputFloat_var load.float (null)
 (null) = f9 write.float (null)
 (null) = f9 write.float (null)
-SEMANTIC: Recognized NodeType_StmtList
 
 === TAC GENERATION ===
 TAC written to output/TAC.ir

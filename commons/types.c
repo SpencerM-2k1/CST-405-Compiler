@@ -1,6 +1,8 @@
+#include <stdio.h>
+#include <string.h>
 #include "types.h"
 
-inline const char* varTypeToString(VarType type) {
+const char* varTypeToString(VarType type) {
     switch (type)
     {
         case (VarType_Int):
@@ -15,5 +17,18 @@ inline const char* varTypeToString(VarType type) {
         default:
             return "UNHANDLED_VARTYPE_ERROR";   //Should only occur when type is UNASSIGNED
             break;                              //(i.e. garbage data from unassigned type, different in nature than "VarType_Error")
+    }
+}
+
+VarType stringToVarType(const char* typeString) {
+    if (strcmp(typeString, "void") == 0) {
+        return VarType_Void;
+    } else if (strcmp(typeString, "int") == 0) {
+        return VarType_Int;
+    } else if (strcmp(typeString, "float") == 0) {
+        return VarType_Float;
+    } else {
+        fprintf(stderr, "COMMONS/TYPES.C: Invalid type assigned to variable");
+        return VarType_Error;
     }
 }

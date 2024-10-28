@@ -60,20 +60,37 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
             }
             break;
 
+        case NodeType_DeclList:
+            printf("DeclList\n");
+
+            numChildren = 0;
+            if (node->data.declList.decl) numChildren++;
+            if (node->data.declList.next) numChildren++;
+
+            childIndex = 0;
+            drawVertical[level - 1] = !isLast;
+            if (node->data.declList.decl) {
+                traverseAST(node->data.declList.decl, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            if (node->data.declList.next) {
+                traverseAST(node->data.declList.next, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            break;
+
         case NodeType_VarDeclList:
             printf("VarDeclList\n");
 
             numChildren = 0;
             if (node->data.varDeclList.varDecl) numChildren++;
-            if (node->data.varDeclList.varDeclList) numChildren++;
+            if (node->data.varDeclList.next) numChildren++;
 
             childIndex = 0;
             drawVertical[level - 1] = !isLast;
             if (node->data.varDeclList.varDecl) {
                 traverseAST(node->data.varDeclList.varDecl, level + 1, drawVertical, ++childIndex == numChildren);
             }
-            if (node->data.varDeclList.varDeclList) {
-                traverseAST(node->data.varDeclList.varDeclList, level + 1, drawVertical, ++childIndex == numChildren);
+            if (node->data.varDeclList.next) {
+                traverseAST(node->data.varDeclList.next, level + 1, drawVertical, ++childIndex == numChildren);
             }
             break;
 
@@ -83,6 +100,48 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
 
         case NodeType_ArrDecl:
             printf("ArrDecl: array %s %s[%d]\n", node->data.arrDecl.varType, node->data.arrDecl.varName, node->data.arrDecl.arrSize);
+            break;
+        
+        case NodeType_FuncDecl:
+            printf("FuncDecl: %s %s\n", varTypeToString(node->data.funcDecl.returnType), node->data.funcDecl.name);
+            
+            numChildren = 0;
+            if (node->data.funcDecl.paramList) numChildren++;
+            if (node->data.funcDecl.varDeclList) numChildren++;
+            if (node->data.funcDecl.stmtList) numChildren++;
+
+            childIndex = 0;
+            drawVertical[level - 1] = !isLast;
+            if (node->data.funcDecl.paramList) {
+                traverseAST(node->data.funcDecl.paramList, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            if (node->data.funcDecl.varDeclList) {
+                traverseAST(node->data.funcDecl.varDeclList, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            if (node->data.funcDecl.stmtList) {
+                traverseAST(node->data.funcDecl.stmtList, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            break;
+
+        case NodeType_ParamList:
+            printf("ParamList\n");
+
+            numChildren = 0;
+            if (node->data.paramList.param) numChildren++;
+            if (node->data.paramList.next) numChildren++;
+
+            childIndex = 0;
+            drawVertical[level - 1] = !isLast;
+            if (node->data.paramList.param) {
+                traverseAST(node->data.paramList.param, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            if (node->data.paramList.next) {
+                traverseAST(node->data.paramList.next, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            break;
+
+        case NodeType_Param:
+            printf("Param: %s %s\n", varTypeToString(node->data.param.type), node->data.param.name);
             break;
 
         case NodeType_IntExpr:
@@ -97,6 +156,38 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
             printf("SimpleID: %s\n", node->data.simpleID.name);
             break;
 
+        case NodeType_FuncCall:
+            printf("FuncCall: %s()\n", node->data.funcCall.name);
+            
+            drawVertical[level - 1] = !isLast;
+            if (node->data.funcCall.argList) {
+                traverseAST(node->data.funcCall.argList, level + 1, drawVertical, true);
+            }
+            break;
+        
+        case NodeType_ArgList:
+            printf("ArgList\n");
+
+            numChildren = 0;
+            if (node->data.argList.arg) numChildren++;
+            if (node->data.argList.next) numChildren++;
+
+            childIndex = 0;
+            drawVertical[level - 1] = !isLast;
+            if (node->data.argList.arg) {
+                traverseAST(node->data.argList.arg, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            if (node->data.argList.next) {
+                traverseAST(node->data.argList.next, level + 1, drawVertical, ++childIndex == numChildren);
+            }
+            break;
+        
+        case NodeType_Arg:
+            printf("Arg\n");
+            drawVertical[level - 1] = !isLast;
+            traverseAST(node->data.arg.expr, level + 1, drawVertical, true);
+            break;
+        
         case NodeType_ArrAccess:
             printf("ArrAccess: %s\n", node->data.arrAccess.name);
             traverseAST(node->data.arrAccess.indexExpr, level + 1, drawVertical, true);
@@ -120,11 +211,9 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
                 childIndex = 0;
                 drawVertical[level - 1] = !isLast;
                 if (node->data.stmtList.stmt) {
-                    // fprintf(stderr, "node->data.stmtList.stmt detected\n");
                     traverseAST(node->data.stmtList.stmt, level + 1, drawVertical, ++childIndex == numChildren);
                 }
                 if (node->data.stmtList.stmtList) {
-                    // fprintf(stderr, "node->data.stmtList.stmtList detected\n");
                     traverseAST(node->data.stmtList.stmtList, level + 1, drawVertical, ++childIndex == numChildren);
                 }
             }
@@ -144,10 +233,6 @@ void traverseAST(ASTNode* node, int level, bool* drawVertical, bool isLast) {
         case NodeType_AssignArrStmt:
             printf("AssignArrStmt: %s[] %s\n", node->data.assignArrStmt.varName, node->data.assignArrStmt.operator);
 
-            // drawVertical[level - 1] = !isLast;
-
-            // numChildren = 2;
-            // childIndex = 0;
             drawVertical[level - 1] = !isLast;
             traverseAST(node->data.assignArrStmt.indexExpr, level + 1, drawVertical, false);
             traverseAST(node->data.assignArrStmt.expr, level + 1, drawVertical, true);
@@ -173,9 +258,14 @@ void freeAST(ASTNode* node) {
             freeAST(node->data.program.stmtList);
             break;
 
+        case NodeType_DeclList:
+            freeAST(node->data.declList.decl);
+            freeAST(node->data.declList.next);
+            break;
+
         case NodeType_VarDeclList:
             freeAST(node->data.varDeclList.varDecl);
-            freeAST(node->data.varDeclList.varDeclList);
+            freeAST(node->data.varDeclList.next);
             break;
 
         case NodeType_VarDecl:
@@ -238,10 +328,15 @@ ASTNode* createNode(NodeType type) {
             newNode->data.program.varDeclList = NULL;
             newNode->data.program.stmtList = NULL;
             break;
-
+        
+        case NodeType_DeclList:
+            newNode->data.declList.decl = NULL;
+            newNode->data.declList.next = NULL;
+            break;
+        
         case NodeType_VarDeclList:
             newNode->data.varDeclList.varDecl = NULL;
-            newNode->data.varDeclList.varDeclList = NULL;
+            newNode->data.varDeclList.next = NULL;
             break;
 
         case NodeType_VarDecl:
@@ -270,6 +365,19 @@ ASTNode* createNode(NodeType type) {
         case NodeType_ArrAccess:
             newNode->data.arrAccess.indexExpr = NULL;
             newNode->data.arrAccess.name = NULL;
+
+        case NodeType_FuncCall:
+            newNode->data.arrAccess.indexExpr = NULL;
+            newNode->data.arrAccess.name = NULL;
+
+        case NodeType_ArgList:
+            newNode->data.argList.arg = NULL;
+            newNode->data.argList.next = NULL;
+            break;
+        
+        case NodeType_Arg:
+            newNode->data.arg.expr = NULL;
+            break;
 
         case NodeType_BinOp:
             newNode->data.binOp.operator = NULL;

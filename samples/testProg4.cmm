@@ -1,0 +1,10 @@
+int returnValue;
+
+int testFunc(int param1, int param2)
+{
+    int x;
+    x = param1 + param2;
+    write x;
+}
+
+returnValue = testFunc(5, 20 + 6);

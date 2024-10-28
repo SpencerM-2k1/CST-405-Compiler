@@ -4,17 +4,26 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "commons/types.h"
 
 // NodeType enum to differentiate between different kinds of AST nodes
 typedef enum { 
     NodeType_Program,       //root
-    NodeType_VarDeclList,   //Linked list containing var/arr declaration nodes
+    NodeType_DeclList,      //Linked list containing var/arr and func declaration nodes
+    NodeType_VarDeclList,   //Linked list containing var/arr declaration nodes (used for functions)
     NodeType_VarDecl,       //Declaration of a var
     NodeType_ArrDecl,       //Declaration of an array
+    // NodeType_FuncDeclList,  //Linked list containing function declaration nodes
+    NodeType_FuncDecl,      //Declaration of a function
+    NodeType_ParamList,     //Linked list containing function parameter nodes
+    NodeType_Param,         //Function parameter node
     NodeType_IntExpr,       //Int literal
     NodeType_FloatExpr,     //Float literal
     NodeType_SimpleID,      //Variable ID
     NodeType_ArrAccess,     //Array ID + Index
+    NodeType_FuncCall,      //Function call
+    NodeType_ArgList,       //Function Argument List
+    NodeType_Arg,           //Individual Function Argument
     NodeType_BinOp,         //Binary operator
     NodeType_StmtList,      //Linked list containing statement nodes
     NodeType_AssignStmt,    //Assign a value to a variable
@@ -34,9 +43,14 @@ typedef struct ASTNode {
             struct ASTNode* stmtList;
         } program;
 
+        struct DeclListNode {
+            struct ASTNode* decl;
+            struct ASTNode* next;
+        } declList;
+
         struct VarDeclListNode {
             struct ASTNode* varDecl;
-            struct ASTNode* varDeclList;
+            struct ASTNode* next;
         } varDeclList;
 
         struct VarDeclNode {
@@ -49,6 +63,29 @@ typedef struct ASTNode {
             char* varName;
             int arrSize;
         } arrDecl;
+
+        // struct FuncDeclListNode {
+        //     struct ASTNode* funcDecl;
+        //     struct ASTNode* next;
+        // } funcDeclList;
+
+        struct FuncDeclNode {
+            char* name;
+            VarType returnType;
+            struct ASTNode* paramList;
+            struct ASTNode* varDeclList;
+            struct ASTNode* stmtList;
+        } funcDecl;
+
+        struct ParamListNode {
+            struct ASTNode* param;
+            struct ASTNode* next;
+        } paramList;
+
+        struct ParamNode {
+            VarType type;
+            char* name;
+        } param;
 
         struct IntExprNode {
             int number;
@@ -66,6 +103,23 @@ typedef struct ASTNode {
             char* name;
             struct ASTNode* indexExpr;
         } arrAccess;
+
+        struct FuncCallNode {
+            char* name;
+            struct ASTNode* argList;
+            bool ignoreReturn;  //Might be unnecessary, might help prevent a memory leak in the operand stack
+                                //(I'm worried that calling a function outside of an assign statement might
+                                // leave an operand on the stack, forever unused. - Spencer Meren)
+        } funcCall;
+
+        struct ArgListNode {
+            struct ASTNode* arg;
+            struct ASTNode* next;
+        } argList;
+
+        struct ArgNode {
+            struct ASTNode* expr;
+        } arg;
 
         struct BinOpNode {
             char* operator;
